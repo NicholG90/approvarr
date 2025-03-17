@@ -1,4 +1,4 @@
-import { Interaction, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle } from 'discord.js';
+import { Interaction, ModalBuilder, TextInputBuilder, ActionRowBuilder, TextInputStyle, MessageFlags } from 'discord.js';
 import { overseerrApi } from '../../helpers/apis/overseerr/overseerrApi';
 import { getDiscordUserIds } from '../../helpers/getDiscordUserIds';
 import { updateEmbed } from '../../outbound/updateButtons';
@@ -25,7 +25,7 @@ export async function issueCommentSubmitHandler(interaction: Interaction) {
         // if the user's discord ID is not found in the users object, return an error
         await interaction.reply({
             content: 'Your discord ID is not linked to an Overseerr account.',
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral
         });
         return;
     }
@@ -49,7 +49,8 @@ export async function issueCommentSubmitHandler(interaction: Interaction) {
     // check if the response was received successfull
     if (apiResponse.status !== 200) {
         await interaction.reply({
-            content: 'Your comment was not submitted successfully - Check the logs!', ephemeral: true,
+            content: 'Your comment was not submitted successfully - Check the logs!',
+            flags: MessageFlags.Ephemeral,
         });
         return;
     }

@@ -1,4 +1,4 @@
-import { Interaction } from 'discord.js';
+import { Interaction, MessageFlags } from 'discord.js';
 import { overseerrApi } from '../../helpers/apis/overseerr/overseerrApi';
 import { updateEmbed } from '../../outbound/updateButtons';
 
@@ -18,7 +18,7 @@ export async function issueCommentResponseHandler(interaction: Interaction) {
     const buttonID = interaction.message.embeds[0].fields.find(
         (field) => field.name === 'Request ID' || field.name === 'Issue ID',
     );
-        // Check if the request ID field was found
+    // Check if the request ID field was found
     if (!buttonID) {
         console.error('Request ID or Issue ID field not found.');
         return;
@@ -33,7 +33,8 @@ export async function issueCommentResponseHandler(interaction: Interaction) {
     // check if the response was received successfull
     if (apiResponse.status !== 200) {
         await interaction.reply({
-            content: 'Your comment was not submitted successfully - Check the logs!', ephemeral: true,
+            content: 'Your comment was not submitted successfully - Check the logs!',
+            flags: MessageFlags.Ephemeral
         });
         return;
     }

@@ -1,5 +1,4 @@
-// Import the necessary modules
-import axios, { Method, AxiosResponse } from 'axios';
+import axios, { Method, AxiosResponse, AxiosRequestConfig } from 'axios';
 
 export async function overseerrApi(
     url: string,
@@ -9,27 +8,40 @@ export async function overseerrApi(
 ): Promise<AxiosResponse> {
     const apiUrl = `${process.env.OVERSEERR_URL}/api/v1${url}`;
     const apiKey = process.env.OVERSEERR_API_KEY || '';
-    // Check if the Overseerr API key is defined
+
+    if (!apiKey) {
+        throw new Error('Overseerr API key is not defined in environment variables');
+    }
+
+    if (!process.env.OVERSEERR_URL) {
+        throw new Error('Overseerr URL is not defined in environment variables');
+    }
+
     try {
         // Set the request headers
-        const headers = {
+        const headers: Record<string, string> = {
             'Content-Type': 'application/json',
             'X-Api-Key': apiKey,
-            'X-API-User': userId ? userId.toString() : '',
         };
-        // Send the request to the Overseerr API
-        const response: AxiosResponse = await axios({
+
+        // Add user ID if provided
+        if (userId) {
+            headers['X-API-User'] = userId.toString();
+        }
+
+        // Configure the request
+        const config: AxiosRequestConfig = {
             method,
             url: apiUrl,
             headers,
-            data: requestBody,
-        });
-        // Return the response data
+            ...(requestBody && { data: requestBody }),
+        };
+
+        // Send the request to the Overseerr API
+        const response = await axios(config);
         return response;
     } catch (error) {
-        console.warn(error);
-        console.error('Error calling Overseerr API');
-        // Handle any errors here
+        console.error('Error calling Overseerr API:', error);
         throw error;
     }
 }

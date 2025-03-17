@@ -1,73 +1,43 @@
 import { overseerrApi } from './apis/overseerr/overseerrApi';
 
-export async function getDiscordUserIds() {
-    // Function to get the number of users
-    async function numUsers(): Promise<number> {
-        try {
+export async function getDiscordUserIds(): Promise<Record<number, string | null>> {
+    try {
+        // Get total number of users
+        const getUserCount = async (): Promise<number> => {
             const response = await overseerrApi('/user', 'GET', { take: 1 });
             return response.data.pageInfo.results;
-        } catch (error) {
-            console.error('Exception on querying Overseerr users:', error);
-            throw error;
-        }
-    }
+        };
 
-    // Function to get all user IDs
-    async function allUsers(): Promise<number[]> {
-        try {
-            const totalUsers = await numUsers();
-            const response = await overseerrApi(
-                `/user?take=${totalUsers}`,
-                'GET',
-            );
+        // Get all user IDs
+        const getAllUserIds = async (): Promise<number[]> => {
+            const totalUsers = await getUserCount();
+            const response = await overseerrApi(`/user?take=${totalUsers}`, 'GET');
             return response.data.results.map((user: any) => user.id);
-        } catch (error) {
-            console.error('Exception on querying Overseerr users:', error);
-            throw error;
-        }
-    }
+        };
 
-    // Function to get Discord ID for a specific user
-    async function discordId(ovsrId: number): Promise<string | null> {
-        try {
-            const response = await overseerrApi(`/user/${ovsrId}`, 'GET');
-            // Check if discordId exists
-            if (response.data.settings && 'discordId' in response.data.settings) {
-                return response.data.settings.discordId;
-            }
-            return null;
-        } catch (error) {
-            console.error('Exception on querying Overseerr Discord ID:', error);
-            throw error;
-        }
-    }
+        // Get Discord ID for a specific user
+        const getDiscordId = async (overseerrId: number): Promise<string | null> => {
+            const response = await overseerrApi(`/user/${overseerrId}`, 'GET');
+            return response.data.settings?.discordId || null;
+        };
 
-    // Function to get a map of Discord IDs to Overseerr IDs
-    async function discordUsers(): Promise<Record<number, string | null>> {
-        try {
-            const ids = await allUsers();
-            const userPromises = ids.map(async (id) => {
-                const discordIdValue = await discordId(id);
-                return { discordIdValue, id };
-            });
+        // Get all users with their Discord IDs
+        const userIds = await getAllUserIds();
+        const userPromises = userIds.map(async (id) => {
+            const discordId = await getDiscordId(id);
+            return { id, discordId };
+        });
 
-            const usersArray = await Promise.all(userPromises);
-            const users: Record<number, string | null> = {};
-            usersArray.forEach(({ id, discordIdValue }) => {
-                users[id] = discordIdValue; // Correctly assign discordIdValue to users[id]
-            });
-            return users;
-        } catch (error) {
-            console.error('Exception on querying Overseerr users:', error);
-            throw error;
-        }
-    }
+        const usersArray = await Promise.all(userPromises);
+        const users: Record<number, string | null> = {};
 
-    try {
-        const users = await discordUsers();
+        usersArray.forEach(({ id, discordId }) => {
+            users[id] = discordId;
+        });
+
         return users;
     } catch (error) {
-        console.error('Error:', error);
-        throw error; // Rethrow the error to handle it in the caller function
+        console.error('Error fetching Discord user IDs:', error);
+        throw error;
     }
 }

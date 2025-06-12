@@ -1,35 +1,8 @@
-import { MessageEditOptions, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
-//
+import { ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
+
 export async function updateEmbed(originalMessage: any, mediaTitle: any, interaction: any, action: any) {
+
     switch (action) {
-        case 'decline': {
-            const mediaDeclined = new ButtonBuilder()
-                .setCustomId('mediaDeclined')
-                .setDisabled(true)
-                .setLabel(`Request declined by ${interaction.user.tag}`)
-                .setStyle(ButtonStyle.Success);
-
-            const row = new ActionRowBuilder<ButtonBuilder>()
-                .addComponents(mediaDeclined);
-            await interaction.update({
-                components: [row],
-            });
-            break;
-        }
-        case 'approve': {
-            const mediaApproved = new ButtonBuilder()
-                .setCustomId('mediaApproved')
-                .setDisabled(true)
-                .setLabel(`Request approved by ${interaction.user.tag}`)
-                .setStyle(ButtonStyle.Success);
-
-            const row = new ActionRowBuilder<ButtonBuilder>()
-                .addComponents(mediaApproved);
-            await interaction.update({
-                components: [row],
-            });
-            break;
-        }
         case 'resolved': {
             const issueClosed = new ButtonBuilder()
                 .setCustomId('issueClosed')

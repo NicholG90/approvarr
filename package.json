@@ -5,7 +5,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "ts-node --respawn --transpile-only src/index.ts",
+    "dev": "ts-node --transpile-only src/bot.ts",
     "start": "node dist/bot.js",
     "build": "tsc",
     "lint": "eslint .",

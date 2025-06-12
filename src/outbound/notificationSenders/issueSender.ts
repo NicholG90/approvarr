@@ -1,25 +1,20 @@
 // Import the necessary modules
 import { Client, ActionRowBuilder, ButtonBuilder, ButtonStyle, TextChannel } from 'discord.js';
 import { EmbedColors, Notification } from '../../constants/notificationData';
+import { IssueNotification } from '../../interfaces/notifications';
 
-export function issueSender(client: Client, payload: any) {
-    // Create the "Comment" button
-    const comment = new ButtonBuilder()
-        .setCustomId('comment')
-        .setLabel('Add Comment')
-        .setStyle(ButtonStyle.Primary);
-    // Create the "Close Issue" button
-    const closeIssue = new ButtonBuilder()
-        .setCustomId('closeIssue')
-        .setLabel('Close Issue')
-        .setStyle(ButtonStyle.Danger);
-    // Create the action row with the buttons
-    const row = new ActionRowBuilder<ButtonBuilder>()
-        .addComponents(closeIssue, comment);
+export function issueSender(client: Client, payload: IssueNotification): void {
+    // Set the channel ID from the environment variables
+    const channelId = process.env.ISSUE_CHANNEL_ID || process.env.CHANNEL_ID;
 
-    // Define the base color for the embed
+    // Check if the channel ID is defined
+    if (!channelId) {
+        console.error('Channel ID is undefined in the environment variables.');
+        return;
+    }
+
+    // Define the color based on notification type
     let color = EmbedColors.DARK_PURPLE;
-    // Switch the color based on the notification type
     switch (payload.notification_type) {
         case Notification.ISSUE_CREATED:
         case Notification.ISSUE_REOPENED:
@@ -31,14 +26,12 @@ export function issueSender(client: Client, payload: any) {
         case Notification.ISSUE_RESOLVED:
             color = EmbedColors.GREEN;
             break;
-        default:
-            color = EmbedColors.DARK_PURPLE;
-            break;
     }
+
     // Create an embed using the payload data
     const embed = {
         title: payload.subject,
-        url: `${process.env.OVERSEERR_URL}/issues/${payload.issue.id}`,
+        url: `${process.env.OVERSEERR_URL}/issues/${payload.issue.issue_id}`,
         description: payload.event,
         color,
         fields: [
@@ -58,14 +51,14 @@ export function issueSender(client: Client, payload: any) {
             },
             {
                 name: 'Issue Type',
-                value: payload.issue.issue_type.charAt(0).toUpperCase()
-                    + payload.issue.issue_type.slice(1).toLowerCase(),
+                value: payload.issue.issue_type.charAt(0).toUpperCase() +
+                    payload.issue.issue_type.slice(1).toLowerCase(),
                 inline: true,
             },
             {
                 name: 'Issue Status',
-                value: payload.issue.issue_status.charAt(0).toUpperCase()
-                    + payload.issue.issue_status.slice(1).toLowerCase(),
+                value: payload.issue.issue_status.charAt(0).toUpperCase() +
+                    payload.issue.issue_status.slice(1).toLowerCase(),
                 inline: true,
             },
         ],
@@ -73,7 +66,8 @@ export function issueSender(client: Client, payload: any) {
             url: payload.image,
         },
     };
-    // push the comment to the embed if it exists
+
+    // Add comment information if available
     if (payload.comment) {
         embed.fields.push({
             name: 'Issue Comment',
@@ -86,24 +80,36 @@ export function issueSender(client: Client, payload: any) {
             inline: true,
         });
     }
-    // Set the channel ID from the environment variables
-    const channelId = process.env.ISSUE_CHANNEL_ID || process.env.CHANNEL_ID;
-    // Check if the channel ID is defined
-    if (!channelId) {
-        console.error('Channel ID is undefined in the environment variables.');
-        return;
-    }
+
     // Get the channel from the client cache
     const channel = client.channels.cache.get(channelId) as TextChannel;
-    // Send the message to the channel
-    if (channel) {
-        channel.send(payload.notification_type !== 'ISSUE_RESOLVED'
-            ? {
-                embeds: [embed],
-                components: [row],
-            }
-            : {
-                embeds: [embed],
-            });
+    if (!channel) {
+        console.error(`Channel with ID ${channelId} not found.`);
+        return;
+    }
+
+    // Only add action buttons for non-resolved issues
+    if (payload.notification_type !== Notification.ISSUE_RESOLVED) {
+        const comment = new ButtonBuilder()
+            .setCustomId('comment')
+            .setLabel('Add Comment')
+            .setStyle(ButtonStyle.Primary);
+
+        const closeIssue = new ButtonBuilder()
+            .setCustomId('closeIssue')
+            .setLabel('Close Issue')
+            .setStyle(ButtonStyle.Danger);
+
+        const row = new ActionRowBuilder<ButtonBuilder>()
+            .addComponents(closeIssue, comment);
+
+        channel.send({
+            embeds: [embed],
+            components: [row],
+        });
+    } else {
+        channel.send({
+            embeds: [embed],
+        });
     }
 }

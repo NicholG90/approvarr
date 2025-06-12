@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { MessageFlags, SlashCommandBuilder } from 'discord.js';
 import { overseerrApi } from '../../helpers/apis/overseerr/overseerrApi';
 import { issueSelectList } from '../../outbound/issueSelects/issueSelectList';
 
@@ -15,7 +15,7 @@ export async function execute(interaction: any) {
     if (!mediaIssue) {
         await interaction.reply({
             content: 'You did not provide a title',
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral
         });
         return;
     }
@@ -27,7 +27,7 @@ export async function execute(interaction: any) {
     if (mediaSearchResultsArray.length === 0) {
         await interaction.reply({
             content: 'No results found',
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral
         });
         return;
     }

@@ -55,7 +55,7 @@ Request a TV series with season selection options.
 - **Multiple Seasons** - Choose multiple specific seasons
 
 **Requirements:**
-- `REQUEST` permission in Overseerr  
+- `REQUEST` permission in Overseerr
 - Available TV quota (if quotas enabled)
 - Discord account linked to Overseerr
 
@@ -74,7 +74,7 @@ Report problems with existing media content.
 
 **Issue Types:**
 - 🎵 **Audio** - Sound problems, wrong language, no audio
-- 📝 **Subtitles** - Missing, incorrect, or broken subtitles  
+- 📝 **Subtitles** - Missing, incorrect, or broken subtitles
 - 🎥 **Video** - Quality issues, corruption, wrong aspect ratio
 - ❓ **Other** - Any other problems not covered above
 
@@ -128,7 +128,7 @@ These actions are available to users with administrative permissions:
 - Requires `MANAGE_REQUESTS` permission in Overseerr
 - Request will be added to Overseerr queue
 
-**Decline Request** ❌  
+**Decline Request** ❌
 - Click the **Decline** button on request notifications
 - Requires `MANAGE_REQUESTS` permission in Overseerr
 - User will be notified of the decision
@@ -143,7 +143,7 @@ These actions are available to users with administrative permissions:
 
 **Close Issue** 🔒
 - Click **Close Issue** button to mark as resolved
-- Requires `MANAGE_ISSUES` permission in Overseerr  
+- Requires `MANAGE_ISSUES` permission in Overseerr
 - Issue status updates in both Discord and Overseerr
 
 ---

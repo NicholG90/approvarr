@@ -75,7 +75,7 @@ Approvarr transforms your Discord server into a comprehensive media management h
 
 4. **✅ Submit Request**
    ```
-   ✅ Request submitted! 
+   ✅ Request submitted!
    Requested Seasons: Season 1, Season 2, Season 3
    ```
 
@@ -146,7 +146,7 @@ Description: Audio is completely out of sync with video starting around 15 minut
 
 **What Happens When Quotas Are Exceeded:**
 ```
-❌ Quota exceeded! 
+❌ Quota exceeded!
 You've used 10/10 movie requests in the last 7 days.
 Your quota resets in 2 days.
 ```
@@ -178,7 +178,7 @@ Synopsis: A computer hacker learns from mysterious rebels...
 - Status updates in real-time
 
 **Decline Request** ❌
-- Click "Decline" button  
+- Click "Decline" button
 - User gets notification of decline
 - Optional: Add comment explaining why
 
@@ -373,7 +373,7 @@ User: [Gets resolution notification]
 
 **User Permissions** (Overseerr-based):
 - `REQUEST`: Can request media and check quotas
-- `REQUEST`: Can typically report issues  
+- `REQUEST`: Can typically report issues
 - No special perms: Can view but not interact
 
 **Admin Permissions** (Overseerr-based):
@@ -386,7 +386,7 @@ User: [Gets resolution notification]
 **Organized Workflow:**
 ```
 #media-requests     ← Movie/TV requests appear here
-#media-issues       ← Issue reports appear here  
+#media-issues       ← Issue reports appear here
 #admin-notifications ← General bot notifications
 ```
 
@@ -447,7 +447,7 @@ User: [Gets resolution notification]
 - **Provide Details**: Give thorough issue descriptions
 - **Be Patient**: Downloads take time after approval
 
-### For Administrators  
+### For Administrators
 - **Stay Responsive**: Quick approvals improve user experience
 - **Communicate**: Use comments to explain decisions
 - **Monitor Quotas**: Adjust limits based on server capacity

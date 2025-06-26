@@ -13,7 +13,7 @@ export function formatSelectedSeasons(selectedSeasons: string[]): string {
   const seasonNumbers = selectedSeasons
     .filter(season => season !== 'all')
     .map(season => Number.parseInt(season, 10))
-    .filter(num => !isNaN(num))
+    .filter(num => !Number.isNaN(num))
     .sort((a, b) => a - b);
 
   if (seasonNumbers.length === 0) {
@@ -26,10 +26,9 @@ export function formatSelectedSeasons(selectedSeasons: string[]): string {
 /**
  * Converts season selection to the format expected by Overseerr API
  * @param selectedSeasons Array of selected season values
- * @param availableSeasons Available seasons from TV data
  * @returns Season data for API request
  */
-export function prepareSeasonRequestData(selectedSeasons: string[], availableSeasons?: TvSeason[]): any {
+export function prepareSeasonRequestData(selectedSeasons: string[]): any {
   if (selectedSeasons.includes('all')) {
     return 'all';
   }
@@ -37,7 +36,7 @@ export function prepareSeasonRequestData(selectedSeasons: string[], availableSea
   const seasonNumbers = selectedSeasons
     .filter(season => season !== 'all')
     .map(season => Number.parseInt(season, 10))
-    .filter(num => !isNaN(num));
+    .filter(num => !Number.isNaN(num));
 
   if (seasonNumbers.length === 0) {
     return [1]; // Default to season 1
@@ -70,7 +69,7 @@ export function validateSeasonSelection(
 
   const seasonNumbers = selectedSeasons
     .map(season => Number.parseInt(season, 10))
-    .filter(num => !isNaN(num));
+    .filter(num => !Number.isNaN(num));
 
   const availableSeasonNumbers = availableSeasons
     .filter(season => season.seasonNumber > 0)

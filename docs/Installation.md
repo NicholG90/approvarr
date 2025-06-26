@@ -24,20 +24,20 @@ services:
     image: ghcr.io/nicholg90/approvarr:latest
     restart: unless-stopped
     ports:
-      - "6000:3000"  # Change 6000 to your preferred port
+      - '6000:3000' # Change 6000 to your preferred port
     environment:
       # === REQUIRED SETTINGS ===
-      BOT_TOKEN: "your_discord_bot_token_here"
-      CHANNEL_ID: "123456789012345678"  # Main Discord channel ID
-      SERVER_ID: "123456789012345678"   # Discord server ID  
-      OVERSEERR_URL: "http://overseerr:5055"  # Your Overseerr URL
-      OVERSEERR_API_KEY: "your_overseerr_api_key_here"
-      
+      BOT_TOKEN: your_discord_bot_token_here
+      CHANNEL_ID: '123456789012345678' # Main Discord channel ID
+      SERVER_ID: '123456789012345678' # Discord server ID
+      OVERSEERR_URL: 'http://overseerr:5055' # Your Overseerr URL
+      OVERSEERR_API_KEY: your_overseerr_api_key_here
+
       # === OPTIONAL SETTINGS ===
-      REQUEST_CHANNEL_ID: "123456789012345678"  # Separate channel for requests
-      ISSUE_CHANNEL_ID: "123456789012345678"    # Separate channel for issues
-      ENABLE_SLASH_COMMANDS: "true"             # Enable Discord slash commands
-      PORT: "3000"                              # Internal container port
+      REQUEST_CHANNEL_ID: '123456789012345678' # Separate channel for requests
+      ISSUE_CHANNEL_ID: '123456789012345678' # Separate channel for issues
+      ENABLE_SLASH_COMMANDS: 'true' # Enable Discord slash commands
+      PORT: '3000' # Internal container port
 ```
 
 Then run:
@@ -68,7 +68,7 @@ docker run -d \
 ### Prerequisites
 - **Node.js 22+** and npm
 - Git
-- Discord bot token  
+- Discord bot token
 - Overseerr/Jellyseerr instance
 
 ### Step 1: Clone Repository
@@ -124,7 +124,7 @@ npm run dev
 3. **Set Bot Permissions**
    - In Bot section, enable these permissions:
      - Send Messages
-     - Use Slash Commands  
+     - Use Slash Commands
      - Embed Links
      - Read Message History
      - Add Reactions
@@ -245,7 +245,7 @@ docker logs approvarr
 Once installed successfully:
 
 1. **📖 Read the [Usage Guide](usage.md)** - Learn how to use all features
-2. **⚙️ Check [Configuration](configuration.md)** - Customize permissions and settings  
+2. **⚙️ Check [Configuration](configuration.md)** - Customize permissions and settings
 3. **🎮 Try [Commands](commands.md)** - Test all available slash commands
 4. **🔄 Set up Webhooks** - Enable real-time notifications
 

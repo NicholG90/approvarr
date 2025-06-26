@@ -16,7 +16,7 @@ Approvarr bridges the gap between **Overseerr/Jellyseerr** and **Discord**, brin
 ### 🚀 Key Features
 
 - **🎯 Slash Commands** - Request movies & TV shows directly in Discord
-- **⚡ Real-time Management** - Approve, decline, and comment on requests instantly  
+- **⚡ Real-time Management** - Approve, decline, and comment on requests instantly
 - **🔧 Issue Reporting** - Report and track media issues with detailed forms
 - **📊 Quota Management** - Built-in request limits with status tracking
 - **🎛️ Flexible Configuration** - Custom channels, permissions, and workflows
@@ -29,11 +29,11 @@ Approvarr bridges the gap between **Overseerr/Jellyseerr** and **Discord**, brin
 
 ### For Users
 1. **Request Media** - Use `/request_movie` or `/request_tv` with any title
-2. **Select from Results** - Choose the correct match from search results  
+2. **Select from Results** - Choose the correct match from search results
 3. **Season Selection** - For TV shows, pick specific seasons or all
 4. **Submit & Track** - Request goes to admins, get real-time updates
 
-### For Administrators  
+### For Administrators
 1. **Receive Notifications** - New requests appear in your Discord channel
 2. **One-Click Actions** - Approve/decline with Discord buttons
 3. **Issue Management** - Handle user reports directly in Discord
@@ -52,20 +52,20 @@ services:
     container_name: approvarr
     image: ghcr.io/nicholg90/approvarr:latest
     ports:
-      - "6000:3000"
+      - '6000:3000'
     environment:
       # Required
-      BOT_TOKEN: "your_discord_bot_token"
-      CHANNEL_ID: "discord_channel_id" 
-      SERVER_ID: "discord_server_id"
-      OVERSEERR_URL: "http://your-overseerr:5055"
-      OVERSEERR_API_KEY: "your_overseerr_api_key"
-      
+      BOT_TOKEN: your_discord_bot_token
+      CHANNEL_ID: discord_channel_id
+      SERVER_ID: discord_server_id
+      OVERSEERR_URL: 'http://your-overseerr:5055'
+      OVERSEERR_API_KEY: your_overseerr_api_key
+
       # Optional
-      REQUEST_CHANNEL_ID: "separate_requests_channel"
-      ISSUE_CHANNEL_ID: "separate_issues_channel" 
-      ENABLE_SLASH_COMMANDS: "true"
-      PORT: "3000"
+      REQUEST_CHANNEL_ID: separate_requests_channel
+      ISSUE_CHANNEL_ID: separate_issues_channel
+      ENABLE_SLASH_COMMANDS: 'true'
+      PORT: '3000'
 ```
 
 ### Manual Installation
@@ -75,7 +75,7 @@ services:
 git clone https://github.com/NicholG90/approvarr.git
 cd approvarr
 
-# Install dependencies  
+# Install dependencies
 npm install
 
 # Build project
@@ -137,7 +137,7 @@ npm start
 ## 🤝 Community & Support
 
 - 💬 **[Discord Server](https://discord.gg/MPwvd9re)** - Get help and chat with users
-- 🐛 **[GitHub Issues](https://github.com/nicholg90/approvarr/issues)** - Bug reports and feature requests  
+- 🐛 **[GitHub Issues](https://github.com/nicholg90/approvarr/issues)** - Bug reports and feature requests
 - 📖 **[Documentation](https://nicholg90.github.io/approvarr/)** - Complete setup and usage guides
 
 ---

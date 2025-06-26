@@ -60,7 +60,7 @@ export async function issueCommentSubmitHandler(interaction: Interaction) {
   if (seasonField) {
     const seasonNumber = seasonField.value.replace('Season ', '');
     const parsedSeason = Number.parseInt(seasonNumber, 10);
-    if (!isNaN(parsedSeason)) {
+    if (!Number.isNaN(parsedSeason)) {
       requestBody.season = parsedSeason;
     }
   }
@@ -68,7 +68,7 @@ export async function issueCommentSubmitHandler(interaction: Interaction) {
   if (episodeField && episodeField.value !== 'Entire Season') {
     const episodeNumber = episodeField.value.replace('Episode ', '');
     const parsedEpisode = Number.parseInt(episodeNumber, 10);
-    if (!isNaN(parsedEpisode)) {
+    if (!Number.isNaN(parsedEpisode)) {
       requestBody.episode = parsedEpisode;
     }
   }

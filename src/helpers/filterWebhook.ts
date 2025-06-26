@@ -23,5 +23,5 @@ export async function filterWebhook(client: Client, payload: WebhookPayload): Pr
     return;
   }
 
-  console.warn(`Unhandled notification type: ${notification_type}`);
+  console.error(`Unhandled notification type: ${notification_type}`);
 }

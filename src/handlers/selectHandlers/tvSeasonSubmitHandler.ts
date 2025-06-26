@@ -13,7 +13,7 @@ function formatSelectedSeasons(selectedSeasons: string[]): string {
   const seasonNumbers = selectedSeasons
     .filter(season => season !== 'all')
     .map(season => Number.parseInt(season, 10))
-    .filter(num => !isNaN(num))
+    .filter(num => !Number.isNaN(num))
     .sort((a, b) => a - b);
 
   if (seasonNumbers.length === 0) {
@@ -42,7 +42,7 @@ function validateSeasonSelection(
 
   const seasonNumbers = selectedSeasons
     .map(season => Number.parseInt(season, 10))
-    .filter(num => !isNaN(num));
+    .filter(num => !Number.isNaN(num));
 
   const availableSeasonNumbers = availableSeasons
     .filter(season => season.seasonNumber > 0)

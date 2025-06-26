@@ -37,7 +37,7 @@ These settings allow you to customize Approvarr's behavior:
 Use one channel for all notifications:
 ```yaml
 environment:
-  CHANNEL_ID: "123456789012345678"
+  CHANNEL_ID: '123456789012345678'
   # Don't set REQUEST_CHANNEL_ID or ISSUE_CHANNEL_ID
 ```
 
@@ -45,9 +45,9 @@ environment:
 Separate channels for different notification types:
 ```yaml
 environment:
-  CHANNEL_ID: "123456789012345678"      # Fallback/general channel
-  REQUEST_CHANNEL_ID: "123456789012345679"  # Media requests only
-  ISSUE_CHANNEL_ID: "123456789012345680"    # Issue reports only
+  CHANNEL_ID: '123456789012345678' # Fallback/general channel
+  REQUEST_CHANNEL_ID: '123456789012345679' # Media requests only
+  ISSUE_CHANNEL_ID: '123456789012345680' # Issue reports only
 ```
 
 **Recommendations:**
@@ -132,7 +132,7 @@ Enable real-time notifications by setting up webhooks:
 
 3. **Select Notification Types:**
    - ✅ Media Requested
-   - ✅ Media Approved  
+   - ✅ Media Approved
    - ✅ Media Declined
    - ✅ Media Available
    - ✅ Issue Created
@@ -148,7 +148,7 @@ For Approvarr to work properly, Discord users must be linked to Overseerr accoun
 ### Automatic Linking
 If users sign into Overseerr using Discord OAuth, they're automatically linked.
 
-### Manual Linking  
+### Manual Linking
 1. **Get Discord User ID**
    - Enable Developer Mode in Discord
    - Right-click user → Copy User ID
@@ -184,7 +184,7 @@ Quotas are configured in Overseerr/Jellyseerr, not in Approvarr.
 
 ### Quota Types
 - **Movie Quota**: Requests per time period
-- **TV Quota**: TV series requests per time period  
+- **TV Quota**: TV series requests per time period
 - **Time Period**: Usually 7 days (configurable)
 
 **Example Configuration:**
@@ -206,9 +206,9 @@ services:
     # ... other config
     networks:
       - media_network
-  
+
   overseerr:
-    # ... overseerr config  
+    # ... overseerr config
     networks:
       - media_network
 
@@ -221,7 +221,7 @@ networks:
 services:
   approvarr:
     ports:
-      - "6000:3000"  # External:Internal
+      - '6000:3000' # External:Internal
 ```
 
 ### Firewall Rules
@@ -243,7 +243,7 @@ If using webhooks, ensure these ports are accessible:
 Use meaningful channel names for better organization:
 ```
 #media-requests    ← REQUEST_CHANNEL_ID
-#media-issues      ← ISSUE_CHANNEL_ID  
+#media-issues      ← ISSUE_CHANNEL_ID
 #bot-notifications ← CHANNEL_ID (fallback)
 ```
 
@@ -271,7 +271,7 @@ Create a `.env` file for manual installations:
 # === REQUIRED ===
 BOT_TOKEN=MTIzNDU2Nzg5MDEyMzQ1Njc4.GhI_jK.LmNoPqRstuVwXyZ
 CHANNEL_ID=123456789012345678
-SERVER_ID=123456789012345678  
+SERVER_ID=123456789012345678
 OVERSEERR_URL=http://localhost:5055
 OVERSEERR_API_KEY=abc123def456ghi789
 
@@ -290,36 +290,36 @@ services:
     container_name: approvarr
     image: ghcr.io/nicholg90/approvarr:latest
     restart: unless-stopped
-    
+
     # Network configuration
     networks:
       - media_network
     ports:
-      - "6000:3000"
-    
+      - '6000:3000'
+
     # Environment variables
     environment:
-      BOT_TOKEN: "${BOT_TOKEN}"
-      CHANNEL_ID: "${CHANNEL_ID}"
-      SERVER_ID: "${SERVER_ID}"
-      OVERSEERR_URL: "http://overseerr:5055"
-      OVERSEERR_API_KEY: "${OVERSEERR_API_KEY}"
-      REQUEST_CHANNEL_ID: "${REQUEST_CHANNEL_ID}"
-      ISSUE_CHANNEL_ID: "${ISSUE_CHANNEL_ID}"
-    
+      BOT_TOKEN: '${BOT_TOKEN}'
+      CHANNEL_ID: '${CHANNEL_ID}'
+      SERVER_ID: '${SERVER_ID}'
+      OVERSEERR_URL: 'http://overseerr:5055'
+      OVERSEERR_API_KEY: '${OVERSEERR_API_KEY}'
+      REQUEST_CHANNEL_ID: '${REQUEST_CHANNEL_ID}'
+      ISSUE_CHANNEL_ID: '${ISSUE_CHANNEL_ID}'
+
     # Health check
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      test: [CMD, curl, -f, 'http://localhost:3000/health']
       interval: 30s
       timeout: 10s
       retries: 3
-    
+
     # Logging
     logging:
-      driver: "json-file"
+      driver: json-file
       options:
-        max-size: "10m"
-        max-file: "3"
+        max-size: 10m
+        max-file: '3'
 
 networks:
   media_network:
@@ -344,7 +344,7 @@ networks:
    ```
    Should return quota information or permission error.
 
-3. **Request Test** 
+3. **Request Test**
    ```
    /request_movie test
    ```
@@ -376,7 +376,7 @@ networks:
 
 **Docker Run:**
 1. Stop container: `docker stop approvarr`
-2. Remove container: `docker rm approvarr`  
+2. Remove container: `docker rm approvarr`
 3. Run with new environment variables
 
 **Manual Installation:**

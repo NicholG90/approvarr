@@ -42,10 +42,10 @@ services:
   approvarr:
     image: ghcr.io/nicholg90/approvarr:latest
     ports:
-      - "6000:3000"
+      - '6000:3000'
     environment:
-      BOT_TOKEN: "your_bot_token"
-      CHANNEL_ID: "your_channel_id"
+      BOT_TOKEN: your_bot_token
+      CHANNEL_ID: your_channel_id
       # ... other settings
 ```
 
@@ -186,9 +186,9 @@ Yes! Multi-channel setup is supported:
 
 ```yaml
 environment:
-  CHANNEL_ID: "123456"           # Fallback channel
-  REQUEST_CHANNEL_ID: "123457"   # Movie/TV requests
-  ISSUE_CHANNEL_ID: "123458"     # Issue reports
+  CHANNEL_ID: '123456' # Fallback channel
+  REQUEST_CHANNEL_ID: '123457' # Movie/TV requests
+  ISSUE_CHANNEL_ID: '123458' # Issue reports
 ```
 
 **Benefits:**
@@ -232,7 +232,7 @@ Users must be linked between Discord and Overseerr accounts.
 2. Add webhook URL: `http://your-server:6000/webhook`
 3. Enable notification types:
    - Media Requested ✅
-   - Media Approved ✅  
+   - Media Approved ✅
    - Media Declined ✅
    - Media Available ✅
    - Issue Created ✅

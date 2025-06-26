@@ -33,7 +33,6 @@ export async function commandRegister(client: Client, token: string, serverID: s
 
             return commandData;
           }
-          console.warn(`[WARNING] The command at ${filePath} is missing a required "data" property.`);
           return null;
         }));
     }));

@@ -19,7 +19,7 @@ function prepareSeasonRequestData(selectedSeasons: string[]): any {
   const seasonNumbers = selectedSeasons
     .filter(season => season !== 'all')
     .map(season => Number.parseInt(season, 10))
-    .filter(num => !isNaN(num));
+    .filter(num => !Number.isNaN(num));
 
   if (seasonNumbers.length === 0) {
     return [1]; // Default to season 1

@@ -8,6 +8,7 @@ import { updateEmbed } from '../outbound/updateButtons';
 import { Permission } from '../helpers/permissions';
 import { checkUserPermission } from '../helpers/permissionCheck';
 import { getRequestDetails } from '../helpers/getRequestDetails';
+import { checkUserQuota, formatQuotaMessage } from '../helpers/quotaCheck';
 
 // Helper function to prepare season data for API request
 function prepareSeasonRequestData(selectedSeasons: string[]): any {
@@ -153,6 +154,19 @@ export function buttonListener(client: Client): void {
                 if (hasPermission && overseerrId) {
                     try {
                         const requestType = interaction.message.interaction?.commandName?.split('_')[1] || 'tv';
+                        const mediaType = requestType === 'movie' ? 'movie' : 'tv';
+                        
+                        // Check user quota before submitting request
+                        const quotaCheck = await checkUserQuota(parseInt(overseerrId, 10), mediaType);
+                        
+                        if (!quotaCheck.hasQuota) {
+                            await interaction.reply({
+                                content: formatQuotaMessage(quotaCheck),
+                                flags: MessageFlags.Ephemeral,
+                            });
+                            return;
+                        }
+
                         const url = `/request/`;
 
                         // Base request body
@@ -183,6 +197,17 @@ export function buttonListener(client: Client): void {
                         }
 
                         await overseerrApi(url, 'POST', requestBody, parseInt(overseerrId, 10));
+                        
+                        // Show success message with quota info if applicable
+                        if (quotaCheck.limit !== Infinity && quotaCheck.limit > 0) {
+                            const updatedQuota = await checkUserQuota(parseInt(overseerrId, 10), mediaType);
+                            const quotaMessage = formatQuotaMessage(updatedQuota);
+                            await interaction.reply({
+                                content: `✅ **Request submitted successfully!**\n\n${quotaMessage}`,
+                                flags: MessageFlags.Ephemeral,
+                            });
+                        }
+                        
                         await updateEmbed(interaction.message, mediaTitle, interaction, 'requested');
                     } catch (error) {
                         console.error('Error requesting media:', error);

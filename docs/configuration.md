@@ -4,6 +4,8 @@
 
 To use approvarr you will need to gather a number of details from your discord server and add the bot.
 
+Create a new application(https://discord.com/developers/applications) for your discord server
+
 ## approvarr Configuarion
 
 ### Optional Settings

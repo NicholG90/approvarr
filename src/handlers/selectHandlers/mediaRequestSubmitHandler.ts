@@ -38,8 +38,12 @@ export async function mediaRequestSubmitHandler(interaction: Interaction, mediaE
         row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(requestButton);
     }
+    // Preserve all existing select menus and add the button row
+    const existingComponents = interaction.message.components || [];
+    const allComponents = [...existingComponents, row];
+    
     await interaction.update({
         embeds: [mediaEmbed],
-        components: [interaction.message.components[0], row],
+        components: allComponents,
     });
 }

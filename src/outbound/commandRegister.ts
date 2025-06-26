@@ -22,7 +22,15 @@ export async function commandRegister(client: Client, token: string, serverID: s
                     const command = commandModule.default || commandModule;
 
                     if ('data' in command && 'toJSON' in command.data) {
-                        return command.data.toJSON();
+                        const commandData = command.data.toJSON();
+
+                        // Skip quota_status command if quota checking is disabled
+                        if (commandData.name === 'quota_status' && process.env.ENABLE_QUOTA_CHECK !== 'true') {
+                            console.info('[INFO] Skipping quota_status command registration (ENABLE_QUOTA_CHECK is not true)');
+                            return null;
+                        }
+
+                        return commandData;
                     }
                     console.warn(`[WARNING] The command at ${filePath} is missing a required "data" property.`);
                     return null;

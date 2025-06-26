@@ -5,6 +5,8 @@ import { mediaRequestSubmitHandler } from '../handlers/selectHandlers/mediaReque
 import { mediaEmbedBuilder } from '../helpers/mediaEmbedBuilder';
 import { tvSeasonSelectHandler } from '../handlers/selectHandlers/tvSeasonSelectHandler';
 import { tvSeasonSubmitHandler } from '../handlers/selectHandlers/tvSeasonSubmitHandler';
+import { tvIssueEpisodeSelectHandler } from '../handlers/selectHandlers/tvIssueEpisodeSelectHandler';
+import { tvIssueTypeSubmitHandler } from '../handlers/selectHandlers/tvIssueTypeSubmitHandler';
 
 export function selectListener(client: Client) {
     client.on('interactionCreate', async (interaction) => {
@@ -43,6 +45,65 @@ export function selectListener(client: Client) {
                     thumbnail: existingEmbed.thumbnail
                 };
                 await tvSeasonSubmitHandler(interaction, mediaEmbed);
+                break;
+            }
+            case 'tvIssueSeasonSelect': {
+                // For TV issue season selection, show episode selection
+                const existingEmbed = interaction.message.embeds[0];
+                
+                // Update or add season field
+                const fields = [...existingEmbed.fields];
+                const seasonFieldIndex = fields.findIndex(f => f.name === 'Season');
+                const seasonField = {
+                    name: 'Season',
+                    value: `Season ${interaction.values[0]}`,
+                    inline: true
+                };
+                
+                if (seasonFieldIndex >= 0) {
+                    fields[seasonFieldIndex] = seasonField;
+                } else {
+                    fields.push(seasonField);
+                }
+                
+                const mediaEmbed = {
+                    title: existingEmbed.title,
+                    url: existingEmbed.url,
+                    color: existingEmbed.color,
+                    fields: fields,
+                    thumbnail: existingEmbed.thumbnail
+                };
+                await tvIssueEpisodeSelectHandler(interaction, mediaEmbed);
+                break;
+            }
+            case 'tvIssueEpisodeSelect': {
+                // For TV issue episode selection, show issue type selection
+                const existingEmbed = interaction.message.embeds[0];
+                
+                // Update or add episode field
+                const fields = [...existingEmbed.fields];
+                const episodeFieldIndex = fields.findIndex(f => f.name === 'Episode');
+                const episodeValue = interaction.values[0] === 'season' ? 'Entire Season' : `Episode ${interaction.values[0]}`;
+                const episodeField = {
+                    name: 'Episode',
+                    value: episodeValue,
+                    inline: true
+                };
+                
+                if (episodeFieldIndex >= 0) {
+                    fields[episodeFieldIndex] = episodeField;
+                } else {
+                    fields.push(episodeField);
+                }
+                
+                const mediaEmbed = {
+                    title: existingEmbed.title,
+                    url: existingEmbed.url,
+                    color: existingEmbed.color,
+                    fields: fields,
+                    thumbnail: existingEmbed.thumbnail
+                };
+                await tvIssueTypeSubmitHandler(interaction, mediaEmbed);
                 break;
             }
             default: {

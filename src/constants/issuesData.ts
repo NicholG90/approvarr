@@ -1,9 +1,7 @@
-export const issueReasons = [
-    { label: 'Audio', value: 'Audio' },
-    { label: 'Subtitles', value: 'Subtitles' },
-    { label: 'Video', value: 'Video' },
-    { label: 'Other', value: 'Other' },
-];
+export const issueReasons = ['Audio', 'Subtitles', 'Video', 'Other'].map(issue => ({
+  label: issue,
+  value: issue,
+}));
 export enum issueType {
   VIDEO = 1,
   AUDIO = 2,

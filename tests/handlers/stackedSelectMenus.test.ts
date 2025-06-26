@@ -1,5 +1,5 @@
-import { tvIssueSeasonSelectHandler } from '../../src/handlers/selectHandlers/tvIssueSeasonSelectHandler';
 import { tvIssueEpisodeSelectHandler } from '../../src/handlers/selectHandlers/tvIssueEpisodeSelectHandler';
+import { tvIssueSeasonSelectHandler } from '../../src/handlers/selectHandlers/tvIssueSeasonSelectHandler';
 import { tvSeasonSelectHandler } from '../../src/handlers/selectHandlers/tvSeasonSelectHandler';
 import { overseerrApi } from '../../src/helpers/apis/overseerr/overseerrApi';
 
@@ -8,7 +8,7 @@ jest.mock('../../src/helpers/apis/overseerr/overseerrApi');
 
 const mockOverseerrApi = overseerrApi as jest.MockedFunction<typeof overseerrApi>;
 
-describe('Stacked Select Menus', () => {
+describe('stacked Select Menus', () => {
   let mockInteraction: any;
   let mockMessage: any;
   let mockEmbed: any;
@@ -17,7 +17,7 @@ describe('Stacked Select Menus', () => {
     mockEmbed = {
       title: 'Test TV Show',
       url: 'https://example.com',
-      color: 0x5865f2,
+      color: 0x5865F2,
       fields: [
         {
           name: 'Media ID',
@@ -62,7 +62,7 @@ describe('Stacked Select Menus', () => {
     jest.restoreAllMocks();
   });
 
-  describe('Issue Reporting Flow', () => {
+  describe('issue Reporting Flow', () => {
     it('should preserve existing components when adding season select', async () => {
       const mockTvData = {
         id: 12345,
@@ -174,7 +174,7 @@ describe('Stacked Select Menus', () => {
     });
   });
 
-  describe('Request Flow', () => {
+  describe('request Flow', () => {
     it('should preserve existing components when adding season select for requests', async () => {
       const mockTvData = {
         id: 12345,
@@ -216,7 +216,7 @@ describe('Stacked Select Menus', () => {
     });
   });
 
-  describe('Error Handling with Stacked Menus', () => {
+  describe('error Handling with Stacked Menus', () => {
     it('should preserve existing components even when API fails', async () => {
       mockOverseerrApi.mockRejectedValueOnce(new Error('API Error'));
       mockOverseerrApi.mockRejectedValueOnce(new Error('API Error')); // Both endpoints fail

@@ -1,12 +1,12 @@
-import { checkUserQuota, formatQuotaMessage } from '../../src/helpers/quotaCheck';
+import type { QuotaCheckResult } from '../../src/interfaces/overseerr';
 import { overseerrApi } from '../../src/helpers/apis/overseerr/overseerrApi';
-import { QuotaCheckResult } from '../../src/interfaces/overseerr';
+import { checkUserQuota, formatQuotaMessage } from '../../src/helpers/quotaCheck';
 
 // Mock the overseerrApi
 jest.mock('../../src/helpers/apis/overseerr/overseerrApi');
 const mockOverseerrApi = overseerrApi as jest.MockedFunction<typeof overseerrApi>;
 
-describe('Quota Check Functionality', () => {
+describe('quota Check Functionality', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -202,7 +202,7 @@ describe('Quota Check Functionality', () => {
 
       expect(console.error).toHaveBeenCalledWith(
         `Error checking quota for user ${mockUserId}:`,
-        expect.any(Error)
+        expect.any(Error),
       );
     });
 

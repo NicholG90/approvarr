@@ -1,8 +1,8 @@
+import { MessageFlags } from 'discord.js';
+import { overseerrApi } from '../../src/helpers/apis/overseerr/overseerrApi';
 import { checkUserPermission } from '../../src/helpers/permissionCheck';
 import { checkUserQuota, formatQuotaMessage } from '../../src/helpers/quotaCheck';
-import { overseerrApi } from '../../src/helpers/apis/overseerr/overseerrApi';
 import { updateEmbed } from '../../src/outbound/updateButtons';
-import { MessageFlags } from 'discord.js';
 
 // Mock dependencies
 jest.mock('../../src/helpers/permissionCheck');
@@ -16,7 +16,7 @@ const mockFormatQuotaMessage = formatQuotaMessage as jest.MockedFunction<typeof 
 const mockOverseerrApi = overseerrApi as jest.MockedFunction<typeof overseerrApi>;
 const mockUpdateEmbed = updateEmbed as jest.MockedFunction<typeof updateEmbed>;
 
-describe('Button Listener - Request Flow with Quota', () => {
+describe('button Listener - Request Flow with Quota', () => {
   let mockInteraction: any;
   let mockMessage: any;
 
@@ -72,15 +72,15 @@ describe('Button Listener - Request Flow with Quota', () => {
     const { hasPermission, overseerrId } = await checkUserPermission(
       mockInteraction,
       'REQUEST' as any,
-      'You do not have permission to request media.'
+      'You do not have permission to request media.',
     );
 
     if (hasPermission && overseerrId) {
       const requestType = mockInteraction.message.interaction?.commandName?.split('_')[1] || 'tv';
       const mediaType = requestType === 'movie' ? 'movie' : 'tv';
-      
-      const quotaCheck = await checkUserQuota(parseInt(overseerrId, 10), mediaType);
-      
+
+      const quotaCheck = await checkUserQuota(Number.parseInt(overseerrId, 10), mediaType);
+
       if (!quotaCheck.hasQuota) {
         await mockInteraction.reply({
           content: formatQuotaMessage(quotaCheck),
@@ -94,7 +94,7 @@ describe('Button Listener - Request Flow with Quota', () => {
         mediaId: 12345,
       };
 
-      await overseerrApi('/request/', 'POST', requestBody, parseInt(overseerrId, 10));
+      await overseerrApi('/request/', 'POST', requestBody, Number.parseInt(overseerrId, 10));
       await updateEmbed(mockInteraction.message, 'Test Movie', mockInteraction, 'requested');
     }
 
@@ -128,15 +128,15 @@ describe('Button Listener - Request Flow with Quota', () => {
     const { hasPermission, overseerrId } = await checkUserPermission(
       mockInteraction,
       'REQUEST' as any,
-      'You do not have permission to request media.'
+      'You do not have permission to request media.',
     );
 
     if (hasPermission && overseerrId) {
       const requestType = mockInteraction.message.interaction?.commandName?.split('_')[1] || 'tv';
       const mediaType = requestType === 'movie' ? 'movie' : 'tv';
-      
-      const quotaCheck = await checkUserQuota(parseInt(overseerrId, 10), mediaType);
-      
+
+      const quotaCheck = await checkUserQuota(Number.parseInt(overseerrId, 10), mediaType);
+
       if (!quotaCheck.hasQuota) {
         await mockInteraction.reply({
           content: formatQuotaMessage(quotaCheck),
@@ -146,7 +146,7 @@ describe('Button Listener - Request Flow with Quota', () => {
       }
 
       // This shouldn't be reached
-      await overseerrApi('/request/', 'POST', {}, parseInt(overseerrId, 10));
+      await overseerrApi('/request/', 'POST', {}, Number.parseInt(overseerrId, 10));
     }
 
     expect(mockCheckUserQuota).toHaveBeenCalledWith(123, 'movie');
@@ -183,15 +183,15 @@ describe('Button Listener - Request Flow with Quota', () => {
     const { hasPermission, overseerrId } = await checkUserPermission(
       mockInteraction,
       'REQUEST' as any,
-      'You do not have permission to request media.'
+      'You do not have permission to request media.',
     );
 
     if (hasPermission && overseerrId) {
       const requestType = mockInteraction.message.interaction?.commandName?.split('_')[1] || 'tv';
       const mediaType = requestType === 'movie' ? 'movie' : 'tv';
-      
-      const quotaCheck = await checkUserQuota(parseInt(overseerrId, 10), mediaType);
-      
+
+      const quotaCheck = await checkUserQuota(Number.parseInt(overseerrId, 10), mediaType);
+
       if (!quotaCheck.hasQuota) {
         return;
       }
@@ -201,7 +201,7 @@ describe('Button Listener - Request Flow with Quota', () => {
         mediaId: 12345,
       };
 
-      await overseerrApi('/request/', 'POST', requestBody, parseInt(overseerrId, 10));
+      await overseerrApi('/request/', 'POST', requestBody, Number.parseInt(overseerrId, 10));
       await updateEmbed(mockInteraction.message, 'Test TV Show', mockInteraction, 'requested');
     }
 
@@ -222,7 +222,7 @@ describe('Button Listener - Request Flow with Quota', () => {
     const { hasPermission, overseerrId } = await checkUserPermission(
       mockInteraction,
       'REQUEST' as any,
-      'You do not have permission to request media.'
+      'You do not have permission to request media.',
     );
 
     if (!hasPermission || !overseerrId) {
@@ -257,20 +257,21 @@ describe('Button Listener - Request Flow with Quota', () => {
       const { hasPermission, overseerrId } = await checkUserPermission(
         mockInteraction,
         'REQUEST' as any,
-        'You do not have permission to request media.'
+        'You do not have permission to request media.',
       );
 
       if (hasPermission && overseerrId) {
-        const quotaCheck = await checkUserQuota(parseInt(overseerrId, 10), 'movie');
-        
+        const quotaCheck = await checkUserQuota(Number.parseInt(overseerrId, 10), 'movie');
+
         if (quotaCheck.hasQuota) {
           await overseerrApi('/request/', 'POST', {
             mediaType: 'movie',
             mediaId: 12345,
-          }, parseInt(overseerrId, 10));
+          }, Number.parseInt(overseerrId, 10));
         }
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error requesting media:', error);
       await mockInteraction.reply({
         content: 'An error occurred while submitting your request.',

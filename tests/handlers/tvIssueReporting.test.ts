@@ -1,21 +1,24 @@
-import { tvIssueSeasonSelectHandler } from '../../src/handlers/selectHandlers/tvIssueSeasonSelectHandler';
-import { tvIssueEpisodeSelectHandler } from '../../src/handlers/selectHandlers/tvIssueEpisodeSelectHandler';
+import { issueType } from '../../src/constants/issuesData';
 import { issueCommentSubmitHandler } from '../../src/handlers/modalHandlers/issueCommentSubmitHandler';
+import { tvIssueEpisodeSelectHandler } from '../../src/handlers/selectHandlers/tvIssueEpisodeSelectHandler';
+import { tvIssueSeasonSelectHandler } from '../../src/handlers/selectHandlers/tvIssueSeasonSelectHandler';
 import { overseerrApi } from '../../src/helpers/apis/overseerr/overseerrApi';
+import { fetchSeasonEpisodes } from '../../src/helpers/episodeDataFetcher';
 import { getDiscordUserIds } from '../../src/helpers/getDiscordUserIds';
 import { updateEmbed } from '../../src/outbound/updateButtons';
-import { issueType } from '../../src/constants/issuesData';
 
 // Mock dependencies
 jest.mock('../../src/helpers/apis/overseerr/overseerrApi');
 jest.mock('../../src/helpers/getDiscordUserIds');
 jest.mock('../../src/outbound/updateButtons');
+jest.mock('../../src/helpers/episodeDataFetcher');
 
 const mockOverseerrApi = overseerrApi as jest.MockedFunction<typeof overseerrApi>;
 const mockGetDiscordUserIds = getDiscordUserIds as jest.MockedFunction<typeof getDiscordUserIds>;
 const mockUpdateEmbed = updateEmbed as jest.MockedFunction<typeof updateEmbed>;
+const mockFetchSeasonEpisodes = fetchSeasonEpisodes as jest.MockedFunction<typeof fetchSeasonEpisodes>;
 
-describe('TV Issue Reporting Flow', () => {
+describe('tV Issue Reporting Flow', () => {
   let mockInteraction: any;
   let mockMessage: any;
   let mockEmbed: any;
@@ -24,7 +27,7 @@ describe('TV Issue Reporting Flow', () => {
     mockEmbed = {
       title: 'Test TV Show',
       url: 'https://example.com',
-      color: 0x5865f2,
+      color: 0x5865F2,
       fields: [
         {
           name: 'Media ID',
@@ -64,7 +67,7 @@ describe('TV Issue Reporting Flow', () => {
     jest.restoreAllMocks();
   });
 
-  describe('TV Issue Season Selection', () => {
+  describe('tV Issue Season Selection', () => {
     it('should display season options for TV shows', async () => {
       const mockTvData = {
         id: 12345,
@@ -105,7 +108,7 @@ describe('TV Issue Reporting Flow', () => {
 
       expect(console.error).toHaveBeenCalledWith(
         'Error fetching TV season data for issue reporting:',
-        expect.any(Error)
+        expect.any(Error),
       );
       expect(mockInteraction.update).toHaveBeenCalledWith({
         embeds: [mockEmbed],
@@ -152,22 +155,20 @@ describe('TV Issue Reporting Flow', () => {
     });
   });
 
-  describe('TV Issue Episode Selection', () => {
+  describe('tV Issue Episode Selection', () => {
     it('should display episode options for selected season', async () => {
-      const mockSeasonData = {
-        episodes: [
-          { episode_number: 1, name: 'Pilot', overview: 'The first episode' },
-          { episode_number: 2, name: 'Second Episode', overview: 'The second episode' },
-          { episode_number: 3, name: 'Third Episode', overview: 'The third episode' },
-        ],
-      };
+      const mockEpisodes = [
+        { episode_number: 1, name: 'Pilot', overview: 'The first episode' },
+        { episode_number: 2, name: 'Second Episode', overview: 'The second episode' },
+        { episode_number: 3, name: 'Third Episode', overview: 'The third episode' },
+      ];
 
       mockInteraction.values = ['1'];
-      mockOverseerrApi.mockResolvedValueOnce({ data: mockSeasonData } as any);
+      mockFetchSeasonEpisodes.mockResolvedValueOnce(mockEpisodes);
 
       await tvIssueEpisodeSelectHandler(mockInteraction, mockEmbed);
 
-      expect(mockOverseerrApi).toHaveBeenCalledWith('/tv/12345/season/1', 'GET');
+      expect(mockFetchSeasonEpisodes).toHaveBeenCalledWith('12345', '1');
       expect(mockInteraction.update).toHaveBeenCalledWith({
         embeds: [mockEmbed],
         components: [
@@ -187,8 +188,7 @@ describe('TV Issue Reporting Flow', () => {
 
     it('should handle API errors when fetching episodes', async () => {
       mockInteraction.values = ['1'];
-      mockOverseerrApi.mockRejectedValueOnce(new Error('API Error'));
-      mockOverseerrApi.mockRejectedValueOnce(new Error('API Error')); // Second call will also fail
+      mockFetchSeasonEpisodes.mockResolvedValueOnce([]); // Return empty array to trigger fallback
 
       await tvIssueEpisodeSelectHandler(mockInteraction, mockEmbed);
 
@@ -207,11 +207,11 @@ describe('TV Issue Reporting Flow', () => {
           }),
         ]),
       });
-      
+
       // Should have fallback options (1-10 episodes) when API fails
       const updateCall = mockInteraction.update.mock.calls[0][0];
-      const episodeMenu = updateCall.components.find((comp: any) => 
-        comp.components && comp.components.some((c: any) => c.data && c.data.custom_id === 'tvIssueEpisodeSelect')
+      const episodeMenu = updateCall.components.find((comp: any) =>
+        comp.components && comp.components.some((c: any) => c.data && c.data.custom_id === 'tvIssueEpisodeSelect'),
       );
       expect(episodeMenu).toBeTruthy();
     });
@@ -244,7 +244,7 @@ describe('TV Issue Reporting Flow', () => {
     });
   });
 
-  describe('TV Issue Submission with Season/Episode Data', () => {
+  describe('tV Issue Submission with Season/Episode Data', () => {
     beforeEach(() => {
       mockInteraction.isModalSubmit = jest.fn(() => true);
       mockInteraction.isStringSelectMenu = jest.fn(() => false);
@@ -269,7 +269,7 @@ describe('TV Issue Reporting Flow', () => {
 
     it('should submit TV issue with season and episode data', async () => {
       mockGetDiscordUserIds.mockResolvedValueOnce({
-        '123': 'discord123',
+        123: 'discord123',
       });
 
       mockOverseerrApi.mockResolvedValueOnce({ status: 200, data: {} } as any);
@@ -286,7 +286,7 @@ describe('TV Issue Reporting Flow', () => {
           season: 2,
           episode: 5,
         },
-        123
+        123,
       );
       expect(mockUpdateEmbed).toHaveBeenCalled();
     });
@@ -311,7 +311,7 @@ describe('TV Issue Reporting Flow', () => {
       ];
 
       mockGetDiscordUserIds.mockResolvedValueOnce({
-        '123': 'discord123',
+        123: 'discord123',
       });
 
       mockOverseerrApi.mockResolvedValueOnce({ status: 200, data: {} } as any);
@@ -327,7 +327,7 @@ describe('TV Issue Reporting Flow', () => {
           mediaId: 12345,
           season: 3,
         },
-        123
+        123,
       );
     });
 
@@ -341,7 +341,7 @@ describe('TV Issue Reporting Flow', () => {
       ];
 
       mockGetDiscordUserIds.mockResolvedValueOnce({
-        '123': 'discord123',
+        123: 'discord123',
       });
 
       mockOverseerrApi.mockResolvedValueOnce({ status: 200, data: {} } as any);
@@ -356,7 +356,7 @@ describe('TV Issue Reporting Flow', () => {
           message: 'Test issue description',
           mediaId: 12345,
         },
-        123
+        123,
       );
     });
 
@@ -374,7 +374,7 @@ describe('TV Issue Reporting Flow', () => {
 
     it('should handle API submission errors', async () => {
       mockGetDiscordUserIds.mockResolvedValueOnce({
-        '123': 'discord123',
+        123: 'discord123',
       });
 
       mockOverseerrApi.mockResolvedValueOnce({ status: 500, data: {} } as any);
@@ -391,7 +391,7 @@ describe('TV Issue Reporting Flow', () => {
       mockInteraction.message.embeds[0].fields = [];
 
       mockGetDiscordUserIds.mockResolvedValueOnce({
-        '123': 'discord123',
+        123: 'discord123',
       });
 
       await issueCommentSubmitHandler(mockInteraction);

@@ -1,4 +1,4 @@
-describe('Command Registration - Environment Control Logic', () => {
+describe('command Registration - Environment Control Logic', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
@@ -19,11 +19,12 @@ describe('Command Registration - Environment Control Logic', () => {
 
     // Simulate the command registration filtering logic from commandRegister.ts
     const commands = [];
-    
+
     // Apply the same logic as in commandRegister.ts for quota_status
     if (mockQuotaCommand.name === 'quota_status' && process.env.ENABLE_QUOTA_CHECK !== 'true') {
       // Skip
-    } else {
+    }
+    else {
       commands.push(mockQuotaCommand);
     }
     commands.push(mockMovieCommand);
@@ -41,11 +42,12 @@ describe('Command Registration - Environment Control Logic', () => {
 
     // Simulate the command registration filtering logic
     const commands = [];
-    
+
     // Apply the same logic as in commandRegister.ts for quota_status
     if (mockQuotaCommand.name === 'quota_status' && process.env.ENABLE_QUOTA_CHECK !== 'true') {
       // Skip - this should happen
-    } else {
+    }
+    else {
       commands.push(mockQuotaCommand);
     }
     commands.push(mockMovieCommand);
@@ -63,11 +65,12 @@ describe('Command Registration - Environment Control Logic', () => {
 
     // Simulate the command registration filtering logic
     const commands = [];
-    
+
     // Apply the same logic as in commandRegister.ts for quota_status
     if (mockQuotaCommand.name === 'quota_status' && process.env.ENABLE_QUOTA_CHECK !== 'true') {
       // Skip - this should happen when undefined
-    } else {
+    }
+    else {
       commands.push(mockQuotaCommand);
     }
     commands.push(mockMovieCommand);

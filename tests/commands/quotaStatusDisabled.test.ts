@@ -9,7 +9,7 @@ jest.mock('../../src/helpers/quotaCheck');
 const mockCheckUserPermission = checkUserPermission as jest.MockedFunction<typeof checkUserPermission>;
 const mockCheckUserQuota = checkUserQuota as jest.MockedFunction<typeof checkUserQuota>;
 
-describe('Quota Status Command - Disabled Environment', () => {
+describe('quota Status Command - Disabled Environment', () => {
   let mockInteraction: any;
   const originalEnv = process.env;
 
@@ -19,7 +19,7 @@ describe('Quota Status Command - Disabled Environment', () => {
     };
 
     jest.clearAllMocks();
-    
+
     // Set environment to disabled for these tests
     process.env = { ...originalEnv };
     process.env.ENABLE_QUOTA_CHECK = 'false';
@@ -34,7 +34,7 @@ describe('Quota Status Command - Disabled Environment', () => {
   it('should work normally when quota checking is enabled', async () => {
     // Override for this specific test
     process.env.ENABLE_QUOTA_CHECK = 'true';
-    
+
     mockCheckUserPermission.mockResolvedValueOnce({
       hasPermission: true,
       overseerrId: '123',
@@ -65,7 +65,7 @@ describe('Quota Status Command - Disabled Environment', () => {
     expect(mockInteraction.reply).toHaveBeenCalledWith(
       expect.objectContaining({
         content: expect.stringContaining('**Your Request Quota Status:**'),
-      })
+      }),
     );
   });
 });

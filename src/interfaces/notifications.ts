@@ -28,6 +28,11 @@ export interface IssueNotification extends BaseNotification {
         issue_type: string;
         issue_status: string;
     };
+    media?: {
+        media_type: string;
+        season?: number;
+        episode?: number;
+    };
     comment?: {
         comment_message: string;
         commentedBy_username: string;

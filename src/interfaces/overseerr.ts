@@ -51,3 +51,24 @@ export interface QuotaCheckResult {
     restricted: boolean;
     days?: number;
 }
+
+export interface IssueEpisodeInfo {
+    seasonNumber: number;
+    episodeNumber: number;
+    episodeTitle?: string;
+}
+
+export interface IssueMediaInfo {
+    mediaId: number;
+    mediaType: 'movie' | 'tv';
+    title: string;
+    seasonNumber?: number;
+    episodeNumber?: number;
+    episodeTitle?: string;
+}
+
+export interface IssueCreationData {
+    issueType: 'video' | 'audio' | 'subtitle' | 'other';
+    message: string;
+    mediaInfo: IssueMediaInfo;
+}

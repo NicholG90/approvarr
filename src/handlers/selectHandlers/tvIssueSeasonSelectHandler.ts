@@ -3,7 +3,7 @@ import { overseerrApi } from '../../helpers/apis/overseerr/overseerrApi';
 import { TvSeriesDetails, TvSeason } from '../../interfaces/overseerr';
 import { createSelectMenuWithPlaceholder, extractCurrentSelection } from '../../helpers/selectMenuBuilder';
 
-export async function tvSeasonSelectHandler(interaction: Interaction, mediaEmbed: any) {
+export async function tvIssueSeasonSelectHandler(interaction: Interaction, mediaEmbed: any) {
     if (!interaction.isStringSelectMenu()) return;
 
     try {
@@ -30,16 +30,8 @@ export async function tvSeasonSelectHandler(interaction: Interaction, mediaEmbed
             });
         }
 
-        // Add "All Seasons" option
-        seasonOptions.unshift(
-            new StringSelectMenuOptionBuilder()
-                .setLabel('All Seasons')
-                .setValue('all')
-                .setDescription('Request all available seasons')
-        );
-
         // If no valid seasons found, add a default option
-        if (seasonOptions.length === 1) { // Only "All Seasons" option
+        if (seasonOptions.length === 0) {
             seasonOptions.push(
                 new StringSelectMenuOptionBuilder()
                     .setLabel('Season 1')
@@ -56,16 +48,10 @@ export async function tvSeasonSelectHandler(interaction: Interaction, mediaEmbed
             seasonOptions.push(...truncatedOptions);
         }
 
-        // Check for current season selection
-        const currentSeason = extractCurrentSelection(mediaEmbed, 'Requested Seasons');
-        
-        const selectMenu = createSelectMenuWithPlaceholder(
-            'tvSeasonSelect',
-            seasonOptions,
-            'What Season would you like to request?',
-            currentSeason?.value,
-            currentSeason?.label
-        );
+        const selectMenu = new StringSelectMenuBuilder()
+            .setCustomId('tvIssueSeasonSelect')
+            .setPlaceholder('Which season has the issue?')
+            .addOptions(...seasonOptions);
 
         const row = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(selectMenu);
@@ -79,14 +65,10 @@ export async function tvSeasonSelectHandler(interaction: Interaction, mediaEmbed
             components: allComponents,
         });
     } catch (error) {
-        console.error('Error fetching TV season data:', error);
+        console.error('Error fetching TV season data for issue reporting:', error);
 
         // Fallback to basic options if API call fails
         const fallbackOptions = [
-            new StringSelectMenuOptionBuilder()
-                .setLabel('All Seasons')
-                .setValue('all')
-                .setDescription('Request all available seasons'),
             new StringSelectMenuOptionBuilder()
                 .setLabel('Season 1')
                 .setValue('1')
@@ -94,12 +76,12 @@ export async function tvSeasonSelectHandler(interaction: Interaction, mediaEmbed
         ];
 
         // Check for current season selection (fallback case)
-        const currentSeason = extractCurrentSelection(mediaEmbed, 'Requested Seasons');
+        const currentSeason = extractCurrentSelection(mediaEmbed, 'Season');
         
         const selectMenu = createSelectMenuWithPlaceholder(
-            'tvSeasonSelect',
+            'tvIssueSeasonSelect',
             fallbackOptions,
-            'What Season would you like to request?',
+            'Which season has the issue?',
             currentSeason?.value,
             currentSeason?.label
         );

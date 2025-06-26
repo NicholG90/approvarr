@@ -30,20 +30,46 @@ export async function issueCommentSubmitHandler(interaction: Interaction) {
         return;
     }
 
-    // Get the media title from the embed
-    const mediaTitle = interaction.message.embeds[0].fields.find(
+    // Get the media ID from the embed
+    const mediaIdField = interaction.message.embeds[0].fields.find(
         (field) => field.name === 'Media ID',
     );
 
-    if (!mediaTitle) {
+    if (!mediaIdField) {
         console.error('Media ID field not found.');
         return;
     }
-    const requestBody = {
+
+    // Check for season and episode information for TV shows
+    const seasonField = interaction.message.embeds[0].fields.find(
+        (field) => field.name === 'Season',
+    );
+    const episodeField = interaction.message.embeds[0].fields.find(
+        (field) => field.name === 'Episode',
+    );
+
+    const requestBody: any = {
         issueType: issueTypeValue,
         message: modalCommentInput,
-        mediaId: parseInt(mediaTitle.value, 10),
+        mediaId: parseInt(mediaIdField.value, 10),
     };
+
+    // Add season and episode information if available (for TV shows)
+    if (seasonField) {
+        const seasonNumber = seasonField.value.replace('Season ', '');
+        const parsedSeason = parseInt(seasonNumber, 10);
+        if (!isNaN(parsedSeason)) {
+            requestBody.season = parsedSeason;
+        }
+    }
+
+    if (episodeField && episodeField.value !== 'Entire Season') {
+        const episodeNumber = episodeField.value.replace('Episode ', '');
+        const parsedEpisode = parseInt(episodeNumber, 10);
+        if (!isNaN(parsedEpisode)) {
+            requestBody.episode = parsedEpisode;
+        }
+    }
     const url = `/issue`;
     const apiResponse = await overseerrApi(url, 'POST', requestBody, parseInt(overseerrId, 10));
     // check if the response was received successfull
@@ -54,5 +80,5 @@ export async function issueCommentSubmitHandler(interaction: Interaction) {
         });
         return;
     }
-    await updateEmbed(interaction.message, mediaTitle, interaction, 'report');
+    await updateEmbed(interaction.message, mediaIdField, interaction, 'report');
 }

@@ -67,6 +67,24 @@ export function issueSender(client: Client, payload: IssueNotification): void {
         },
     };
 
+    // Add season/episode information if available (for TV shows)
+    if (payload.media && payload.media.media_type === 'tv') {
+        if (payload.media.season) {
+            embed.fields.push({
+                name: 'Season',
+                value: `Season ${payload.media.season}`,
+                inline: true,
+            });
+        }
+        if (payload.media.episode) {
+            embed.fields.push({
+                name: 'Episode',
+                value: `Episode ${payload.media.episode}`,
+                inline: true,
+            });
+        }
+    }
+
     // Add comment information if available
     if (payload.comment) {
         embed.fields.push({

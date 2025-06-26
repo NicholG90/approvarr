@@ -1,8 +1,6 @@
 - [Home](/)
 - [Installation](Installation.md)
 - [Configuration](configuration.md)
-- [Usage](usage.md)
 - [Commands](commands.md)
 - [Testing](testing.md)
 - [Contributing](contributing.md)
-- [FAQ](faq.md)

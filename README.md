@@ -118,7 +118,6 @@ npm start
 | 🔧 [Installation](docs/Installation.md) | Step-by-step setup instructions |
 | ⚙️ [Configuration](docs/configuration.md) | Environment variables and settings |
 | 🎮 [Commands](docs/commands.md) | All available slash commands |
-| 📘 [Usage Guide](docs/usage.md) | How to use all features |
 | 🧪 [Testing](docs/testing.md) | Development and testing info |
 
 ---

@@ -9,8 +9,8 @@ dotenv.config();
 
 // Create an Express application
 const app = express();
-// Get the port from the environment variables
-const { PORT } = process.env;
+// Get the port from the environment variables, default to 3000
+const PORT = process.env.PORT || '3000';
 
 export function handleWebhook(client: Client) {
   // Apply the JSON middleware to parse the request body

@@ -164,7 +164,7 @@ npm run dev
 
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
-| `BOT_TOKEN` | ✅ | Discord bot token | `MTIzNDU2Nzg5MDEyMzQ1Njc4.GhI_jK.LmNoPqRstuVwXyZ` |
+| `BOT_TOKEN` | ✅ | Discord bot token | `randombottoken` |
 | `CHANNEL_ID` | ✅ | Main Discord channel ID | `123456789012345678` |
 | `SERVER_ID` | ✅ | Discord server ID | `123456789012345678` |
 | `OVERSEERR_URL` | ✅ | Overseerr/Jellyseerr URL | `http://overseerr:5055` |
@@ -173,6 +173,7 @@ npm run dev
 | `ISSUE_CHANNEL_ID` | ❌ | Separate channel for issues | `123456789012345678` |
 | `ENABLE_SLASH_COMMANDS` | ❌ | Enable slash commands | `true` (default) |
 | `PORT` | ❌ | Internal port | `3000` (default) |
+| `ENABLE_QUOTA_CHECK` | ❌ | Enables Quota Check Slash Command | `true` (default) |
 
 ---
 
@@ -237,16 +238,3 @@ docker logs approvarr
 - 💬 [Discord Server](https://discord.gg/MPwvd9re) - Live support
 - 🐛 [GitHub Issues](https://github.com/nicholg90/approvarr/issues) - Bug reports
 - 📖 [Configuration Guide](configuration.md) - Detailed settings
-
----
-
-## 🎉 Next Steps
-
-Once installed successfully:
-
-1. **📖 Read the [Usage Guide](usage.md)** - Learn how to use all features
-2. **⚙️ Check [Configuration](configuration.md)** - Customize permissions and settings
-3. **🎮 Try [Commands](commands.md)** - Test all available slash commands
-4. **🔄 Set up Webhooks** - Enable real-time notifications
-
-Welcome to Approvarr! 🎬

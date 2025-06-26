@@ -5,7 +5,7 @@ import { overseerrApi } from '../../src/helpers/apis/overseerr/overseerrApi';
 jest.mock('axios');
 const mockAxios = axios as jest.MockedFunction<typeof axios>;
 
-describe('Overseerr API Integration', () => {
+describe('overseerr API Integration', () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
@@ -78,7 +78,7 @@ describe('Overseerr API Integration', () => {
     delete process.env.OVERSEERR_API_KEY;
 
     await expect(overseerrApi('/test', 'GET')).rejects.toThrow(
-      'Overseerr API key is not defined in environment variables'
+      'Overseerr API key is not defined in environment variables',
     );
 
     expect(mockAxios).not.toHaveBeenCalled();
@@ -88,7 +88,7 @@ describe('Overseerr API Integration', () => {
     delete process.env.OVERSEERR_URL;
 
     await expect(overseerrApi('/test', 'GET')).rejects.toThrow(
-      'Overseerr URL is not defined in environment variables'
+      'Overseerr URL is not defined in environment variables',
     );
 
     expect(mockAxios).not.toHaveBeenCalled();
@@ -111,12 +111,12 @@ describe('Overseerr API Integration', () => {
 
     for (const method of methods) {
       await overseerrApi('/test', method);
-      
+
       expect(mockAxios).toHaveBeenCalledWith(
         expect.objectContaining({
           method,
           url: 'http://localhost:5055/api/v1/test',
-        })
+        }),
       );
     }
 
@@ -136,11 +136,11 @@ describe('Overseerr API Integration', () => {
 
     for (const path of testCases) {
       await overseerrApi(path, 'GET');
-      
+
       expect(mockAxios).toHaveBeenCalledWith(
         expect.objectContaining({
           url: `http://localhost:5055/api/v1${path}`,
-        })
+        }),
       );
     }
   });

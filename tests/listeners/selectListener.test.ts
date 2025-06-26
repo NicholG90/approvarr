@@ -1,8 +1,8 @@
-import { selectListener } from '../../src/listeners/selectListener';
 import { issueReportSubmitHandler } from '../../src/handlers/selectHandlers/issueReportSubmitHandler';
 import { tvIssueEpisodeSelectHandler } from '../../src/handlers/selectHandlers/tvIssueEpisodeSelectHandler';
 import { tvIssueTypeSubmitHandler } from '../../src/handlers/selectHandlers/tvIssueTypeSubmitHandler';
 import { mediaEmbedBuilder } from '../../src/helpers/mediaEmbedBuilder';
+import { selectListener } from '../../src/listeners/selectListener';
 
 // Mock dependencies
 jest.mock('../../src/handlers/selectHandlers/issueReportSubmitHandler');
@@ -15,7 +15,7 @@ const mockTvIssueEpisodeSelectHandler = tvIssueEpisodeSelectHandler as jest.Mock
 const mockTvIssueTypeSubmitHandler = tvIssueTypeSubmitHandler as jest.MockedFunction<typeof tvIssueTypeSubmitHandler>;
 const mockMediaEmbedBuilder = mediaEmbedBuilder as jest.MockedFunction<typeof mediaEmbedBuilder>;
 
-describe('Select Listener - TV Issue Reporting', () => {
+describe('select Listener - TV Issue Reporting', () => {
   let mockClient: any;
   let mockInteraction: any;
   let mockEmbed: any;
@@ -24,7 +24,7 @@ describe('Select Listener - TV Issue Reporting', () => {
     mockEmbed = {
       title: 'Test TV Show',
       url: 'https://example.com',
-      color: 0x5865f2,
+      color: 0x5865F2,
       fields: [
         {
           name: 'Media ID',
@@ -92,7 +92,7 @@ describe('Select Listener - TV Issue Reporting', () => {
             inline: true,
           },
         ]),
-      })
+      }),
     );
   });
 
@@ -116,7 +116,7 @@ describe('Select Listener - TV Issue Reporting', () => {
             inline: true,
           },
         ]),
-      })
+      }),
     );
   });
 
@@ -163,7 +163,7 @@ describe('Select Listener - TV Issue Reporting', () => {
             inline: true,
           },
         ]),
-      })
+      }),
     );
   });
 });

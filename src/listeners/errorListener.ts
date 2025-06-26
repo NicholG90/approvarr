@@ -1,7 +1,7 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 
 export function errorListener(client: Client) {
-    client.on('error', (error) => {
-        console.error('Unhandled error:', error);
-    });
+  client.on('error', (error) => {
+    console.error('Unhandled error:', error);
+  });
 }

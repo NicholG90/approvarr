@@ -7,18 +7,19 @@ import { overseerrApi } from './apis/overseerr/overseerrApi';
  * @returns Request information including user details, or null if not found/error
  */
 export async function getRequestDetails(requestId: string): Promise<any> {
-    try {
-        if (!requestId) {
-            return null;
-        }
-
-        const requestResponse = await overseerrApi(`/request/${requestId}`, 'GET');
-        if (requestResponse.status === 200) {
-            return requestResponse.data;
-        }
-        return null;
-    } catch (error) {
-        console.error('Error fetching request details:', error);
-        return null;
+  try {
+    if (!requestId) {
+      return null;
     }
+
+    const requestResponse = await overseerrApi(`/request/${requestId}`, 'GET');
+    if (requestResponse.status === 200) {
+      return requestResponse.data;
+    }
+    return null;
+  }
+  catch (error) {
+    console.error('Error fetching request details:', error);
+    return null;
+  }
 }

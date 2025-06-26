@@ -15,7 +15,7 @@ process.env.ENABLE_QUOTA_CHECK = process.env.ENABLE_QUOTA_CHECK || 'true';
 jest.setTimeout(10000);
 
 // Mock console methods in tests to reduce noise
-global.console = {
+globalThis.console = {
   ...console,
   log: jest.fn(),
   error: jest.fn(),

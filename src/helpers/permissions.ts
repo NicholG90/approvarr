@@ -1,5 +1,3 @@
-/* eslint-disable default-case */
-/* eslint-disable no-bitwise */
 // This is pulled from the Overseerr project: https://github.com/sct/overseerr/blob/develop/server/lib/permissions.ts
 export enum Permission {
   NONE = 0,
@@ -44,31 +42,28 @@ export interface PermissionCheckOptions {
  * @param value users current permission value
  * @param options Extra options to control permission check behavior (mainly for arrays)
  */
-export const hasPermission = (
-    permissions: Permission | Permission[],
-    value: number,
-    options: PermissionCheckOptions = { type: 'and' },
-): boolean => {
-    let total = 0;
+export function hasPermission(permissions: Permission | Permission[], value: number, options: PermissionCheckOptions = { type: 'and' }): boolean {
+  let total = 0;
 
-    // If we are not checking any permissions, bail out and return true
-    if (permissions === 0) {
-        return true;
+  // If we are not checking any permissions, bail out and return true
+  if (permissions === 0) {
+    return true;
+  }
+
+  if (Array.isArray(permissions)) {
+    if (value & Permission.ADMIN) {
+      return true;
     }
-
-    if (Array.isArray(permissions)) {
-        if (value & Permission.ADMIN) {
-            return true;
-        }
-        switch (options.type) {
-            case 'and':
-                return permissions.every((permission) => !!(value & permission));
-            case 'or':
-                return permissions.some((permission) => !!(value & permission));
-        }
-    } else {
-        total = permissions;
+    switch (options.type) {
+      case 'and':
+        return permissions.every(permission => !!(value & permission));
+      case 'or':
+        return permissions.some(permission => !!(value & permission));
     }
+  }
+  else {
+    total = permissions;
+  }
 
-    return !!(value & Permission.ADMIN) || !!(value & total);
-};
+  return !!(value & Permission.ADMIN) || !!(value & total);
+}

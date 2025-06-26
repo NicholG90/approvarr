@@ -15,7 +15,6 @@ An Overseerr & Jellyseerr Request, Approval & Issue Management Bot for Discord
 
 - Bug reports and feature requests can be submitted via [GitHub Issues](https://github.com/nicholg90/approvarr/issues).
 
-
 ## Community
 
 If you would like to chat with other users, [join the approvarr Discord server](https://discord.gg/MPwvd9re)!
@@ -23,4 +22,3 @@ If you would like to chat with other users, [join the approvarr Discord server](
 ## Contributing
 
 If you'd like to imporver approvarr please feel free to open a well documented pull request!
-

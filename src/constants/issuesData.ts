@@ -1,6 +1,6 @@
 export const issueReasons = ['Audio', 'Subtitles', 'Video', 'Other'].map(issue => ({
-    label: issue,
-    value: issue
+  label: issue,
+  value: issue,
 }));
 export enum issueType {
   VIDEO = 1,

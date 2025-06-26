@@ -2,23 +2,22 @@
 
 ## Docker (Recommended)
 
-
 #### Docker Compose
 ```yaml
 approvarr:
-    container_name: approvarr
-    image: ghcr.io/nicholg90/approvarr:production
-    environment:
+  container_name: approvarr
+  image: ghcr.io/nicholg90/approvarr:production
+  environment:
     - BOT_TOKEN=discord_bot_token
     - CHANNEL_ID=discord_channel_id
-    - REQUEST_CHANNEL_ID=discord_channel_id ### Optional -- See Configuration
-    - ISSUE_CHANNEL_ID=discord_channel_id ### Optional - See Configuration
+    - REQUEST_CHANNEL_ID=discord_channel_id # ## Optional -- See Configuration
+    - ISSUE_CHANNEL_ID=discord_channel_id # ## Optional - See Configuration
     - SERVER_ID=discord_server_id
     - PORT=3000
     - OVERSEERR_URL=overseerr/jellyseerr_url
     - OVERSEERR_API_KEY=overseerr/jellyseerr_api_key
     - ENABLE_SLASH_COMMANDS=true
-    ports:
+  ports:
     - 6000:3000
 ```
 
@@ -59,9 +58,4 @@ docker run --name approvarr -p 6000:3000 -e BOT_TOKEN=discord_bot_token -e CHANN
     npm start run
     ```
 
-
 Once installed please see the [configuration documentation](https://github.com/NicholG90/approvarr/blob/main/docs/README.md)
-
-
-
-

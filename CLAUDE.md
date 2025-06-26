@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Build and Test
 - `npm run build` - Compile TypeScript to dist/
-- `npm run lint` - Run ESLint 
+- `npm run lint` - Run ESLint
 - `npm run lint:fix` - Fix linting issues
 - `npm test` - Run Jest test suite
 - `npm run test:coverage` - Run tests with coverage report
@@ -24,7 +24,7 @@ Run `npm run test:coverage` after changes. The project has comprehensive test co
 src/
 ├── bot.ts                 # Main entry point
 ├── commands/overseerr/    # Slash commands (/request_movie, /request_tv, etc.)
-├── handlers/              # Modal and select menu handlers  
+├── handlers/              # Modal and select menu handlers
 ├── listeners/             # Discord event listeners (button, command, etc.)
 ├── helpers/apis/          # Overseerr API client and utilities
 ├── interfaces/            # TypeScript type definitions

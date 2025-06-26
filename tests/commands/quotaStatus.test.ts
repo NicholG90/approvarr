@@ -1,7 +1,7 @@
+import { MessageFlags } from 'discord.js';
 import { execute } from '../../src/commands/overseerr/quotaStatus';
 import { checkUserPermission } from '../../src/helpers/permissionCheck';
 import { checkUserQuota, formatQuotaMessage } from '../../src/helpers/quotaCheck';
-import { MessageFlags } from 'discord.js';
 
 // Mock dependencies
 jest.mock('../../src/helpers/permissionCheck');
@@ -11,7 +11,7 @@ const mockCheckUserPermission = checkUserPermission as jest.MockedFunction<typeo
 const mockCheckUserQuota = checkUserQuota as jest.MockedFunction<typeof checkUserQuota>;
 const mockFormatQuotaMessage = formatQuotaMessage as jest.MockedFunction<typeof formatQuotaMessage>;
 
-describe('Quota Status Command', () => {
+describe('quota Status Command', () => {
   let mockInteraction: any;
 
   beforeEach(() => {
@@ -189,7 +189,7 @@ describe('Quota Status Command', () => {
 
     expect(console.error).toHaveBeenCalledWith(
       'Error fetching quota status:',
-      expect.any(Error)
+      expect.any(Error),
     );
 
     expect(mockInteraction.reply).toHaveBeenCalledWith({

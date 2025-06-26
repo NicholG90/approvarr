@@ -1,12 +1,12 @@
 // Mock dependencies
+import { execute as executeOverseerrQuotaStatus } from '../../src/commands/overseerr/quotaStatus';
+
 jest.mock('../../src/commands/overseerr/quotaStatus', () => ({
   execute: jest.fn(),
 }));
-
-import { execute as executeOverseerrQuotaStatus } from '../../src/commands/overseerr/quotaStatus';
 const mockExecuteOverseerrQuotaStatus = executeOverseerrQuotaStatus as jest.MockedFunction<typeof executeOverseerrQuotaStatus>;
 
-describe('Command Listener - Quota Status Command', () => {
+describe('command Listener - Quota Status Command', () => {
   let mockInteraction: any;
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('Command Listener - Quota Status Command', () => {
   it('should execute quota status command when called', async () => {
     // Simulate the command listener logic for quota_status
     const { commandName } = mockInteraction;
-    
+
     if (commandName === 'quota_status') {
       await executeOverseerrQuotaStatus(mockInteraction);
     }

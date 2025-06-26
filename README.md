@@ -46,4 +46,3 @@ See the [Installation Guide](docs/Installation.md) for Docker and manual setup i
 ## Documentation
 
 Full documentation: [docs](https://nicholg90.github.io/approvarr/)
-

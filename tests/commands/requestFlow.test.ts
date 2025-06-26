@@ -1,9 +1,9 @@
 import { execute as executeMovieRequest } from '../../src/commands/overseerr/requestMovie';
 import { execute as executeTvRequest } from '../../src/commands/overseerr/requestTv';
 import { overseerrApi } from '../../src/helpers/apis/overseerr/overseerrApi';
-import { mediaSelectList } from '../../src/outbound/mediaSelects/mediaSelectList';
 import { checkUserPermission } from '../../src/helpers/permissionCheck';
 import { checkUserQuota } from '../../src/helpers/quotaCheck';
+import { mediaSelectList } from '../../src/outbound/mediaSelects/mediaSelectList';
 
 // Mock dependencies
 jest.mock('../../src/helpers/apis/overseerr/overseerrApi');
@@ -16,7 +16,7 @@ const mockMediaSelectList = mediaSelectList as jest.MockedFunction<typeof mediaS
 const mockCheckUserPermission = checkUserPermission as jest.MockedFunction<typeof checkUserPermission>;
 const mockCheckUserQuota = checkUserQuota as jest.MockedFunction<typeof checkUserQuota>;
 
-describe('Request Commands', () => {
+describe('request Commands', () => {
   let mockInteraction: any;
 
   beforeEach(() => {
@@ -49,7 +49,7 @@ describe('Request Commands', () => {
     jest.clearAllMocks();
   });
 
-  describe('Movie Request Command', () => {
+  describe('movie Request Command', () => {
     it('should search and display movie results', async () => {
       const mockSearchResults = {
         data: {
@@ -83,7 +83,7 @@ describe('Request Commands', () => {
 
       expect(mockInteraction.options.getString).toHaveBeenCalledWith('movie_title');
       expect(mockOverseerrApi).toHaveBeenCalledWith('/search?query=test movie', 'get');
-      
+
       // Should filter to only movies
       const expectedMovieResults = [
         {
@@ -123,7 +123,7 @@ describe('Request Commands', () => {
     });
   });
 
-  describe('TV Request Command', () => {
+  describe('tV Request Command', () => {
     it('should search and display TV results', async () => {
       const mockSearchResults = {
         data: {
@@ -157,7 +157,7 @@ describe('Request Commands', () => {
 
       expect(mockInteraction.options.getString).toHaveBeenCalledWith('tv_title');
       expect(mockOverseerrApi).toHaveBeenCalledWith('/search?query=test tv show', 'get');
-      
+
       // Should filter to only TV shows
       const expectedTvResults = [
         {
@@ -197,7 +197,7 @@ describe('Request Commands', () => {
     });
   });
 
-  describe('Search Integration', () => {
+  describe('search Integration', () => {
     it('should handle API errors gracefully', async () => {
       mockInteraction.options.getString.mockReturnValue('test movie');
       mockOverseerrApi.mockRejectedValueOnce(new Error('API Error'));

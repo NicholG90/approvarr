@@ -1,8 +1,8 @@
-import { issueSender } from '../../src/outbound/notificationSenders/issueSender';
+import type { IssueNotification } from '../../src/interfaces/notifications';
 import { Notification } from '../../src/constants/notificationData';
-import { IssueNotification } from '../../src/interfaces/notifications';
+import { issueSender } from '../../src/outbound/notificationSenders/issueSender';
 
-describe('Issue Sender - Season/Episode Display', () => {
+describe('issue Sender - Season/Episode Display', () => {
   let mockClient: any;
   let mockChannel: any;
   let originalEnv: any;

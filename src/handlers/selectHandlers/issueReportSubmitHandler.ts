@@ -1,6 +1,7 @@
 import { Interaction, StringSelectMenuBuilder, ActionRowBuilder } from 'discord.js';
 import { issueReasons } from '../../constants/issuesData';
 import { tvIssueSeasonSelectHandler } from './tvIssueSeasonSelectHandler';
+import { UIUtils } from '../../helpers/uiUtils';
 
 export async function issueReportSubmitHandler(interaction: Interaction, mediaEmbed: any) {
     if (!interaction.isStringSelectMenu()) return;
@@ -20,9 +21,7 @@ export async function issueReportSubmitHandler(interaction: Interaction, mediaEm
         const row = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(selectMenu);
         
-        // Preserve previous select menus and add the new one
-        const existingComponents = interaction.message.components || [];
-        const allComponents = [...existingComponents, row];
+        const allComponents = UIUtils.preserveComponents(interaction.message.components, row);
         
         await interaction.update({
             embeds: [mediaEmbed],

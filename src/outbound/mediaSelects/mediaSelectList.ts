@@ -1,9 +1,9 @@
-// Import the necessary modules
 import {
     ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, CommandInteraction,
     MessageFlags,
 } from 'discord.js';
 import { OverseerrSearchMediaResults } from '../../interfaces/overseerr';
+import { UIUtils } from '../../helpers/uiUtils';
 
 export async function mediaSelectList(
     interaction: CommandInteraction,
@@ -11,9 +11,7 @@ export async function mediaSelectList(
 ) {
     const { mediaType } = mediaArray[0];
     const options = mediaArray.map((media) => {
-        const label = mediaType === 'tv' && media.name
-            ? `${media.name} (${media.firstAirDate?.split('-')[0]})`
-            : `${media.title ?? 'Unknown Title'} ${media.releaseDate ? `(${media.releaseDate.split('-')[0]})` : ''}`;
+        const label = UIUtils.formatMediaLabel(media, mediaType);
         return new StringSelectMenuOptionBuilder()
             .setLabel(label)
             .setValue(`${media.id.toString()}-${media.mediaType.toString()}`);

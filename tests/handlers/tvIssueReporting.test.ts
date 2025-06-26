@@ -5,15 +5,18 @@ import { overseerrApi } from '../../src/helpers/apis/overseerr/overseerrApi';
 import { getDiscordUserIds } from '../../src/helpers/getDiscordUserIds';
 import { updateEmbed } from '../../src/outbound/updateButtons';
 import { issueType } from '../../src/constants/issuesData';
+import { fetchSeasonEpisodes } from '../../src/helpers/episodeDataFetcher';
 
 // Mock dependencies
 jest.mock('../../src/helpers/apis/overseerr/overseerrApi');
 jest.mock('../../src/helpers/getDiscordUserIds');
 jest.mock('../../src/outbound/updateButtons');
+jest.mock('../../src/helpers/episodeDataFetcher');
 
 const mockOverseerrApi = overseerrApi as jest.MockedFunction<typeof overseerrApi>;
 const mockGetDiscordUserIds = getDiscordUserIds as jest.MockedFunction<typeof getDiscordUserIds>;
 const mockUpdateEmbed = updateEmbed as jest.MockedFunction<typeof updateEmbed>;
+const mockFetchSeasonEpisodes = fetchSeasonEpisodes as jest.MockedFunction<typeof fetchSeasonEpisodes>;
 
 describe('TV Issue Reporting Flow', () => {
   let mockInteraction: any;
@@ -154,20 +157,18 @@ describe('TV Issue Reporting Flow', () => {
 
   describe('TV Issue Episode Selection', () => {
     it('should display episode options for selected season', async () => {
-      const mockSeasonData = {
-        episodes: [
-          { episode_number: 1, name: 'Pilot', overview: 'The first episode' },
-          { episode_number: 2, name: 'Second Episode', overview: 'The second episode' },
-          { episode_number: 3, name: 'Third Episode', overview: 'The third episode' },
-        ],
-      };
+      const mockEpisodes = [
+        { episode_number: 1, name: 'Pilot', overview: 'The first episode' },
+        { episode_number: 2, name: 'Second Episode', overview: 'The second episode' },
+        { episode_number: 3, name: 'Third Episode', overview: 'The third episode' },
+      ];
 
       mockInteraction.values = ['1'];
-      mockOverseerrApi.mockResolvedValueOnce({ data: mockSeasonData } as any);
+      mockFetchSeasonEpisodes.mockResolvedValueOnce(mockEpisodes);
 
       await tvIssueEpisodeSelectHandler(mockInteraction, mockEmbed);
 
-      expect(mockOverseerrApi).toHaveBeenCalledWith('/tv/12345/season/1', 'GET');
+      expect(mockFetchSeasonEpisodes).toHaveBeenCalledWith('12345', '1');
       expect(mockInteraction.update).toHaveBeenCalledWith({
         embeds: [mockEmbed],
         components: [
@@ -187,8 +188,7 @@ describe('TV Issue Reporting Flow', () => {
 
     it('should handle API errors when fetching episodes', async () => {
       mockInteraction.values = ['1'];
-      mockOverseerrApi.mockRejectedValueOnce(new Error('API Error'));
-      mockOverseerrApi.mockRejectedValueOnce(new Error('API Error')); // Second call will also fail
+      mockFetchSeasonEpisodes.mockResolvedValueOnce([]); // Return empty array to trigger fallback
 
       await tvIssueEpisodeSelectHandler(mockInteraction, mockEmbed);
 

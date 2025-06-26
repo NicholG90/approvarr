@@ -1,7 +1,8 @@
 import { Interaction, StringSelectMenuBuilder, ActionRowBuilder, StringSelectMenuOptionBuilder } from 'discord.js';
 import { overseerrApi } from '../../helpers/apis/overseerr/overseerrApi';
-import { TvSeriesDetails, TvSeason } from '../../interfaces/overseerr';
+import { TvSeriesDetails } from '../../interfaces/overseerr';
 import { createSelectMenuWithPlaceholder, extractCurrentSelection } from '../../helpers/selectMenuBuilder';
+import { UIUtils } from '../../helpers/uiUtils';
 
 export async function tvIssueSeasonSelectHandler(interaction: Interaction, mediaEmbed: any) {
     if (!interaction.isStringSelectMenu()) return;
@@ -13,22 +14,7 @@ export async function tvIssueSeasonSelectHandler(interaction: Interaction, media
         const response = await overseerrApi(`/tv/${mediaId}`, 'GET');
         const tvData: TvSeriesDetails = response.data;
 
-        // Create season options from the TV data
-        const seasonOptions: StringSelectMenuOptionBuilder[] = [];
-
-        if (tvData.seasons && Array.isArray(tvData.seasons)) {
-            // Filter out special seasons (season 0) and create options
-            const validSeasons = tvData.seasons.filter((season: TvSeason) => season.seasonNumber > 0);
-
-            validSeasons.forEach((season: TvSeason) => {
-                seasonOptions.push(
-                    new StringSelectMenuOptionBuilder()
-                        .setLabel(`Season ${season.seasonNumber}`)
-                        .setValue(season.seasonNumber.toString())
-                        .setDescription(`${season.episodeCount || 0} episodes`)
-                );
-            });
-        }
+        const seasonOptions = tvData.seasons ? UIUtils.createSeasonOptions(tvData.seasons) : [];
 
         // If no valid seasons found, add a default option
         if (seasonOptions.length === 0) {
@@ -56,9 +42,7 @@ export async function tvIssueSeasonSelectHandler(interaction: Interaction, media
         const row = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(selectMenu);
 
-        // Add season select menu (preserve existing components)
-        const existingComponents = interaction.message.components || [];
-        const allComponents = [...existingComponents, row];
+        const allComponents = UIUtils.preserveComponents(interaction.message.components, row);
         
         await interaction.update({
             embeds: [mediaEmbed],
@@ -89,9 +73,7 @@ export async function tvIssueSeasonSelectHandler(interaction: Interaction, media
         const row = new ActionRowBuilder<StringSelectMenuBuilder>()
             .addComponents(selectMenu);
 
-        // Add season select menu (fallback - preserve existing components)
-        const existingComponents = interaction.message.components || [];
-        const allComponents = [...existingComponents, row];
+        const allComponents = UIUtils.preserveComponents(interaction.message.components, row);
         
         await interaction.update({
             embeds: [mediaEmbed],

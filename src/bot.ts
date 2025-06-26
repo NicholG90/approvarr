@@ -1,4 +1,3 @@
-// Import the necessary modules
 import { Client, GatewayIntentBits } from 'discord.js';
 import * as dotenv from 'dotenv';
 import { handleWebhook } from './webhooks/webhook';
@@ -9,13 +8,9 @@ import { commandListener } from './listeners/commandListener';
 import { commandRegister } from './outbound/commandRegister';
 import { errorListener } from './listeners/errorListener';
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Define an async function to start the bot
 async function startBot() {
-    // Create a new Discord client with the specified intents
-
     console.info(`Starting Approvarr`);
     console.info(`Version: ${process.env.npm_package_version}`);
 

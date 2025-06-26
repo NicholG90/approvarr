@@ -1,6 +1,7 @@
 import { Interaction, ButtonBuilder, ButtonStyle, ActionRowBuilder, MessageFlags } from 'discord.js';
 import { overseerrApi } from '../../helpers/apis/overseerr/overseerrApi';
 import { TvSeriesDetails, TvSeason } from '../../interfaces/overseerr';
+import { UIUtils } from '../../helpers/uiUtils';
 
 // Helper function to format selected seasons for display
 function formatSelectedSeasons(selectedSeasons: string[]): string {
@@ -62,18 +63,7 @@ export async function tvSeasonSubmitHandler(interaction: Interaction, mediaEmbed
     if (!interaction.isStringSelectMenu()) return;
 
     try {
-        // Extract media ID from the embed Media ID field
-        const mediaIdField = mediaEmbed.fields.find((field: any) => field.name === 'Media ID');
-        if (!mediaIdField) {
-            console.error('Could not find Media ID field in embed');
-            await interaction.reply({
-                content: 'Error: Could not find media information. Please try again.',
-                flags: MessageFlags.Ephemeral,
-            });
-            return;
-        }
-
-        const mediaId = mediaIdField.value;
+        const mediaId = UIUtils.extractMediaId(mediaEmbed);
         const selectedSeasons = interaction.values;
 
         // Fetch TV data to validate seasons and get status
@@ -133,9 +123,7 @@ export async function tvSeasonSubmitHandler(interaction: Interaction, mediaEmbed
                 .addComponents(requestButton);
         }
 
-        // Preserve all existing select menus and add the button row
-        const existingComponents = interaction.message.components || [];
-        const allComponents = [...existingComponents, row];
+        const allComponents = UIUtils.preserveComponents(interaction.message.components, row);
         
         await interaction.update({
             embeds: [updatedEmbed],

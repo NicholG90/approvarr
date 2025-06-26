@@ -1,5 +1,6 @@
 import { Interaction, ButtonBuilder, ButtonStyle, ActionRowBuilder } from 'discord.js';
 import { overseerrApi } from '../../helpers/apis/overseerr/overseerrApi';
+import { UIUtils } from '../../helpers/uiUtils';
 
 export async function mediaRequestSubmitHandler(interaction: Interaction, mediaEmbed: any) {
     if (!interaction.isStringSelectMenu()) return;
@@ -38,9 +39,7 @@ export async function mediaRequestSubmitHandler(interaction: Interaction, mediaE
         row = new ActionRowBuilder<ButtonBuilder>()
             .addComponents(requestButton);
     }
-    // Preserve all existing select menus and add the button row
-    const existingComponents = interaction.message.components || [];
-    const allComponents = [...existingComponents, row];
+    const allComponents = UIUtils.preserveComponents(interaction.message.components, row);
     
     await interaction.update({
         embeds: [mediaEmbed],

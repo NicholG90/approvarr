@@ -29,3 +29,25 @@ export interface TvSeriesDetails {
         status: number;
     };
 }
+
+export interface UserQuota {
+    movie: QuotaDetails;
+    tv: QuotaDetails;
+}
+
+export interface QuotaDetails {
+    used: number;
+    limit: number;
+    remaining: number;
+    restricted: boolean;
+}
+
+export interface QuotaCheckResult {
+    hasQuota: boolean;
+    remaining: number;
+    limit: number;
+    used: number;
+    mediaType: 'movie' | 'tv';
+    restricted: boolean;
+    days?: number;
+}

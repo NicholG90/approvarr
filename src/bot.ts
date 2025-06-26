@@ -17,6 +17,7 @@ async function startBot() {
     // Create a new Discord client with the specified intents
 
     console.info(`Starting Approvarr`);
+    console.info(`Version: ${process.env.npm_package_version}`);
 
     const client = new Client({
         intents: [

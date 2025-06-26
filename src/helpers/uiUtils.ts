@@ -1,4 +1,3 @@
-import type { EmbedBuilder } from 'discord.js';
 import type { TvSeason } from '../interfaces/overseerr';
 import { StringSelectMenuOptionBuilder } from 'discord.js';
 
@@ -55,6 +54,25 @@ export class UIUtils {
   }
 
   static preserveComponents(existingComponents: any[], newRow: any) {
-    return [...(existingComponents || []), newRow];
+    const components = [...(existingComponents || [])];
+
+    // Check if the new row contains buttons
+    const newRowHasButtons = newRow.components?.some((component: any) =>
+      component.type === 2 || component.data?.type === 2, // ButtonComponent type
+    );
+
+    if (newRowHasButtons) {
+      // Find and remove existing button rows
+      const filteredComponents = components.filter((row) => {
+        const hasButtons = row.components?.some((component: any) =>
+          component.type === 2 || component.data?.type === 2,
+        );
+        return !hasButtons;
+      });
+      return [...filteredComponents, newRow];
+    }
+
+    // For non-button components (like select menus), just append
+    return [...components, newRow];
   }
 }

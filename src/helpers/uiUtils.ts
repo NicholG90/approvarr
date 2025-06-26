@@ -44,8 +44,10 @@ export class UIUtils {
     return `${media.title || 'Unknown Title'} (${media.releaseDate?.split('-')[0] || 'Unknown'})`;
   }
 
-  static extractMediaId(mediaEmbed: EmbedBuilder): string {
-    const mediaIdField = mediaEmbed.data.fields?.find(field => field.name === 'Media ID');
+  static extractMediaId(mediaEmbed: any): string {
+    // Handle both EmbedBuilder format (embed.data.fields) and plain object format (embed.fields)
+    const fields = mediaEmbed.data?.fields || mediaEmbed.fields;
+    const mediaIdField = fields?.find((field: any) => field.name === 'Media ID');
     if (!mediaIdField) {
       throw new Error('Media ID not found in embed');
     }

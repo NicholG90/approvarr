@@ -4,6 +4,7 @@ import { issueReportSubmitHandler } from '../handlers/selectHandlers/issueReport
 import { mediaRequestSubmitHandler } from '../handlers/selectHandlers/mediaRequestSubmitHandler';
 import { mediaEmbedBuilder } from '../helpers/mediaEmbedBuilder';
 import { tvSeasonSelectHandler } from '../handlers/selectHandlers/tvSeasonSelectHandler';
+import { tvSeasonSubmitHandler } from '../handlers/selectHandlers/tvSeasonSubmitHandler';
 
 export function selectListener(client: Client) {
     client.on('interactionCreate', async (interaction) => {
@@ -22,9 +23,26 @@ export function selectListener(client: Client) {
                 const mediaEmbed = await mediaEmbedBuilder(interaction);
                 const mediaType = interaction.values[0].split('-')[1].trim();
                 if (mediaType === 'tv') {
-                    tvSeasonSelectHandler(interaction, mediaEmbed);
+                    // For TV shows, show season selection first
+                    await tvSeasonSelectHandler(interaction, mediaEmbed);
+                } else {
+                    // For movies, proceed directly to request submission
+                    await mediaRequestSubmitHandler(interaction, mediaEmbed);
                 }
-                await mediaRequestSubmitHandler(interaction, mediaEmbed);
+                break;
+            }
+            case 'tvSeasonSelect': {
+                // For season selection, we need to get the original media embed data
+                // from the existing embed rather than rebuilding it from the interaction
+                const existingEmbed = interaction.message.embeds[0];
+                const mediaEmbed = {
+                    title: existingEmbed.title,
+                    url: existingEmbed.url,
+                    color: existingEmbed.color,
+                    fields: [...existingEmbed.fields],
+                    thumbnail: existingEmbed.thumbnail
+                };
+                await tvSeasonSubmitHandler(interaction, mediaEmbed);
                 break;
             }
             default: {

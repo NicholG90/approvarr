@@ -9,6 +9,24 @@ import { Permission } from '../helpers/permissions';
 import { checkUserPermission } from '../helpers/permissionCheck';
 import { getRequestDetails } from '../helpers/getRequestDetails';
 
+// Helper function to prepare season data for API request
+function prepareSeasonRequestData(selectedSeasons: string[]): any {
+    if (selectedSeasons.includes('all')) {
+        return 'all';
+    }
+
+    const seasonNumbers = selectedSeasons
+        .filter(season => season !== 'all')
+        .map(season => parseInt(season, 10))
+        .filter(num => !isNaN(num));
+
+    if (seasonNumbers.length === 0) {
+        return [1]; // Default to season 1
+    }
+
+    return seasonNumbers;
+}
+
 export function buttonListener(client: Client): void {
     client.on('interactionCreate', async (interaction) => {
         if (!interaction.isButton()) return;
@@ -124,7 +142,8 @@ export function buttonListener(client: Client): void {
                 }
                 break;
             }
-            case 'requestMedia': {
+            case 'requestMedia':
+            case 'requestTvWithSeasons': {
                 const { hasPermission, overseerrId } = await checkUserPermission(
                     interaction,
                     Permission.REQUEST,
@@ -133,12 +152,35 @@ export function buttonListener(client: Client): void {
 
                 if (hasPermission && overseerrId) {
                     try {
-                        const requestType = interaction.message.interaction?.commandName.split('_')[1];
+                        const requestType = interaction.message.interaction?.commandName?.split('_')[1] || 'tv';
                         const url = `/request/`;
-                        const requestBody = {
+
+                        // Base request body
+                        const requestBody: any = {
                             mediaType: requestType,
                             mediaId: parseInt(uniqueId, 10),
                         };
+
+                        // For TV requests with seasons, add season information
+                        if (interaction.customId === 'requestTvWithSeasons') {
+                            // Extract season information from the embed
+                            const seasonField = interaction.message.embeds[0].fields.find(
+                                field => field.name === 'Requested Seasons'
+                            );
+
+                            if (seasonField) {
+                                if (seasonField.value === 'All Seasons') {
+                                    requestBody.seasons = 'all';
+                                } else {
+                                    // Parse season numbers from the field value and use helper
+                                    const seasonStrings = seasonField.value
+                                        .split(', ')
+                                        .map(season => season.replace('Season ', ''));
+
+                                    requestBody.seasons = prepareSeasonRequestData(seasonStrings);
+                                }
+                            }
+                        }
 
                         await overseerrApi(url, 'POST', requestBody, parseInt(overseerrId, 10));
                         await updateEmbed(interaction.message, mediaTitle, interaction, 'requested');

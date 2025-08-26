@@ -21,6 +21,4 @@ Thank you for your interest in contributing to Approvarr!
 
 ## Community
 
-- Join the [Discord server](https://discord.gg/MPwvd9re) to discuss ideas and get help.
-
 Thank you for helping improve Approvarr!

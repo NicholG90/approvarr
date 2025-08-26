@@ -21,4 +21,4 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 # compile TypeScript to JavaScript
 RUN npm run build
-CMD ["node", "dist/src/bot.js"]
+CMD ["node", "dist/bot.js"]
